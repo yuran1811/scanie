@@ -1,15 +1,32 @@
+import { standardize } from '@/utils/judge';
 import { FC, memo } from 'react';
+import Tesseract from 'tesseract.js';
 
 interface TesseractResultProps {
-  text: string;
+  recogResult: Tesseract.Page | null;
 }
 
-const TesseractResult: FC<TesseractResultProps> = ({ text }) => (
+const TesseractResult: FC<TesseractResultProps> = ({ recogResult }) => (
   <>
-    {!!text && (
+    {!!recogResult && (
       <div className="w-full flex flex-col items-center justify-start mb-12">
         <div className="font-bold text-center text-[3rem] sm:text-[4rem] p-4">Result</div>
-        <div className="p-6 text-[2.2rem]">{text}</div>
+
+        <div className="p-6 text-[2.2rem]">
+          <div className="font-bold text-center text-[3rem] sm:text-[3.4rem] p-4">Raw</div>
+          <div>
+            <pre>{recogResult.text}</pre>
+          </div>
+        </div>
+
+        <div className="p-6 text-[2.2rem]">
+          <div className="font-bold text-center text-[3rem] sm:text-[3.4rem] p-4">
+            Standard result
+          </div>
+          <div>
+            <pre>{standardize(recogResult)}</pre>
+          </div>
+        </div>
       </div>
     )}
   </>

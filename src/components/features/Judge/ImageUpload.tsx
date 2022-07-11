@@ -2,6 +2,7 @@ import { InputProps } from '@shared/types';
 import { FC, memo, RefObject } from 'react';
 
 interface ImageUploadProps {
+  isShow?: boolean;
   imagePath: string;
   imageRef: RefObject<HTMLImageElement>;
 }
@@ -9,7 +10,7 @@ interface ImageUploadProps {
 const ImageUpload: FC<ImageUploadProps & InputProps> = ({ imageRef, imagePath, onChange }) => (
   <div className="w-full flex flex-col items-center justify-start mb-12">
     <div className="flex items-center justify-start border-ct-color border-[0.4rem] rounded-[1rem] mb-8 w-full sm:w-auto">
-      <label className="hidden sm:block cursor-pointer px-4" htmlFor="upload-image">
+      <label className="hidden sm:block cursor-pointer font-semibold px-4" htmlFor="upload-image">
         Choose image
       </label>
       <input

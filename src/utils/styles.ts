@@ -1,6 +1,6 @@
 export const customStyle = {
   underline:
-    'after:flex after:items-center after:justify-center after:content-[""] after:absolute after:bottom-0 after:left-0 after:h-[0.3rem] after:scale-100 after:origin-center after:w-[100%] after:bg-current',
+    'after:flex after:items-center after:justify-center after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:h-[0.3rem] after:scale-100 after:origin-center after:w-[100%] after:bg-current',
 };
 
 export const averageScore = {
