@@ -20,44 +20,41 @@ export const JudgeContainer = () => {
   });
 
   const imageRef = useRef<HTMLImageElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleChange = useCallback((e: any) => {
+    if (!e.target.files.length) return;
+
     const imgUrl = URL.createObjectURL(e.target.files[0]);
 
     setRecogResult(null);
     setImagePath(imgUrl);
     setConvert(true);
-    setProgress((s) => ({
-      ...s,
-      value: 0,
-      status: '',
-    }));
+    setProgress((s) => ({ ...s, value: 0, status: '' }));
   }, []);
 
   const handleClick = useCallback(async () => {
     try {
+      if (!canvasRef.current) return;
+
       setRecogResult(null);
       setConvert(false);
 
-      const data = await recognize(imagePath, (m: any) => {
-        setProgress((s) => ({
-          ...s,
-          value: m.progress,
-          status: m.status,
-        }));
+      const dataURI = canvasRef.current.toDataURL('image/jpeg');
+
+      const data = await recognize(dataURI, (m: any) => {
+        setProgress((s) => ({ ...s, value: m.progress, status: m.status }));
       });
       if (!data) return;
 
       setRecogResult(data);
     } catch (error) {
       console.log(error + '');
+
       setProgress({
         value: 0,
         status: '',
-        error: {
-          isError: true,
-          errorMessage: error + '',
-        },
+        error: { isError: true, errorMessage: error + '' },
       });
     } finally {
       setConvert(true);
@@ -66,7 +63,12 @@ export const JudgeContainer = () => {
 
   return (
     <main className="p-8">
-      <ImageUpload imageRef={imageRef} imagePath={imagePath} onChange={handleChange} />
+      <ImageUpload
+        imageRef={imageRef}
+        canvasRef={canvasRef}
+        imagePath={imagePath}
+        onChange={handleChange}
+      />
 
       <div className="w-full flex flex-col items-center justify-start mb-12">
         {isConvert && (

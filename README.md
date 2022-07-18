@@ -9,3 +9,5 @@
 - Typescript
 - TailwindCSS
 - TesseractJS
+
+<!-- https://dev.to/mathewthe2/using-javascript-to-preprocess-images-for-ocr-1jc -->

@@ -17,36 +17,30 @@ export const recognize = async (img: string, callback: CallableFunction) => {
 export const standardize = (result: Tesseract.Page) => {
   const questions = result.lines.map((_) =>
     _.text
-      .replace(/[\n\s]/g, '')
       .trim()
+      .replace(/[\n\t]/g, '')
       .split('+')
   );
   // console.log('accuracy: ', result);
-  // console.log('questions: ', questions);
 
   const scores: { [key: string]: string } = {};
 
   questions.map((question) => {
-    question.pop();
-
     question.forEach((item) => {
-      const choices = item.split(':');
-      choices.pop();
-
-      const order = choices.shift();
+      const pattern = item.replace(/[^A-Za-z\d]/gi, '');
+      const order = pattern.match(/\d+/gi);
       if (!order) return;
 
-      scores[order] = 'blank';
+      scores[order[0]] = 'blank';
 
-      choices.forEach((chosen, idx) => {
-        if (/([^ABCD])/.test(chosen)) {
-          scores[order] = ['A', 'B', 'C', 'D'][idx];
-        }
-      });
+      const notChosenAns = pattern.match(/[A-Za-z]+/gi);
+      const chosenAns = 'ABCD'.match(new RegExp(`[^${notChosenAns}]`, 'gim'));
+
+      chosenAns && (scores[order[0]] = chosenAns[0]);
     });
   });
 
-  console.log(scores);
+  console.log(questions, scores);
 
   return questions.join('\n');
 };
