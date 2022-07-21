@@ -1,4 +1,6 @@
 export * from './dayjsUsage';
+export * from './judge';
+export * from './preprocessingImg';
 export * from './styles';
 
 interface CmpObject extends Object {

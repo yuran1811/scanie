@@ -2,15 +2,15 @@ import { InputProps } from '@shared/types';
 import { Dispatch, FC, SetStateAction, useRef, useState } from 'react';
 
 interface SearchBarProps {
-  setSearchOpts: Dispatch<
-    SetStateAction<{
-      isSearch: boolean;
-      value: string;
-    }>
-  >;
+  // setSearchOpts: Dispatch<
+  //   SetStateAction<{
+  //     isSearch: boolean;
+  //     value: string;
+  //   }>
+  // >;
 }
 
-export const SearchBar: FC<SearchBarProps & InputProps> = ({ setSearchOpts, onChange }) => {
+export const SearchBar: FC<SearchBarProps & InputProps> = ({ onChange }) => {
   const [isActive, setActive] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,10 +38,10 @@ export const SearchBar: FC<SearchBarProps & InputProps> = ({ setSearchOpts, onCh
             e.currentTarget.value = '';
 
             setActive(false);
-            setSearchOpts({
-              isSearch: false,
-              value: '',
-            });
+            // setSearchOpts({
+            //   isSearch: false,
+            //   value: '',
+            // });
           }}
         />
         <button
@@ -53,10 +53,10 @@ export const SearchBar: FC<SearchBarProps & InputProps> = ({ setSearchOpts, onCh
           onClick={() => {
             if (isActive && inputRef !== null && inputRef?.current) {
               inputRef.current.value = '';
-              setSearchOpts({
-                isSearch: false,
-                value: '',
-              });
+              // setSearchOpts({
+              //   isSearch: false,
+              //   value: '',
+              // });
             }
             setActive((s) => !s);
           }}

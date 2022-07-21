@@ -1,10 +1,10 @@
-import { recognize } from '@/utils/judge';
+import { recognize } from '@/utils';
 import { ErrorMessage } from '@cpns/interfaces';
 import { Button, ProgressBar } from '@cpns/shared';
-import { useCallback, useRef, useState } from 'react';
-import Tesseract from 'tesseract.js';
 import ImageUpload from './ImageUpload';
 import TesseractResult from './TesseractResult';
+import { useCallback, useRef, useState } from 'react';
+import Tesseract from 'tesseract.js';
 
 export const JudgeContainer = () => {
   const [recogResult, setRecogResult] = useState<Tesseract.Page | null>(null);

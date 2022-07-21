@@ -7,5 +7,11 @@ interface ErrorMessageProps {
 }
 
 export const ErrorMessage: FC<ErrorMessageProps & DivProps> = ({ content, extraStyle }) => (
-  <div className={`text-rose-600 text-center font-semibold ${extraStyle || ''}`}>{content}</div>
+  <div
+    className={`px-6 py-4 rounded-[2rem] bg-rose-600 text-rose-200 text-center font-semibold ${
+      extraStyle || ''
+    }`}
+  >
+    {content}
+  </div>
 );

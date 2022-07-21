@@ -1,4 +1,4 @@
-import { standardize } from '@/utils/judge';
+import { standardize } from '@/utils';
 import { FC, memo, useEffect, useState } from 'react';
 import Tesseract from 'tesseract.js';
 

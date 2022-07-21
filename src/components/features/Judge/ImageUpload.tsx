@@ -1,4 +1,4 @@
-import { preprocessImage } from '@/utils/preprocessingImg';
+import { preprocessImage } from '@/utils';
 import { InputProps } from '@shared/types';
 import { FC, RefObject, useEffect } from 'react';
 
@@ -55,7 +55,7 @@ const ImageUpload: FC<ImageUploadProps & InputProps> = ({
       </div>
 
       {!!imagePath && (
-        <div className="border-[2px] border-ct-bg-800 p-6">
+        <div className="flexcentercol gap-6 border-[2px] border-ct-bg-800 p-6">
           <img ref={imageRef} className="w-full max-w-[50rem]" src={imagePath} />
           <canvas ref={canvasRef} />
         </div>

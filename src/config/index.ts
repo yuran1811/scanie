@@ -1,3 +1,6 @@
+import { DetailItem } from '@cpns/features/Res/DetailItem';
+import { ErrorContent } from '@cpns/shared';
+
 export const axiosConfig = {
   baseURL: import.meta.env.VITE_API_URL,
   headers: { 'content-type': 'application/json' },
@@ -15,6 +18,21 @@ export const firebaseConfig = {
 };
 
 export const routes = {
-  home: 'home',
-  judge: 'judge',
+  home: {
+    index: 'home',
+  },
+
+  judge: {
+    index: 'judge',
+  },
+
+  results: {
+    index: 'results',
+    others: {
+      detail: {
+        path: ':resultId',
+        component: DetailItem || ErrorContent,
+      },
+    },
+  },
 };
