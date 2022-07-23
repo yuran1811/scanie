@@ -1,5 +1,5 @@
+import { Overlay } from '@cpns/shared/Overlay';
 import { DivProps } from '@shared/types';
-import { Overlay } from './Overlay';
 import { FC } from 'react';
 
 export const ModalBox: FC<DivProps> = ({ className, onClick, children }) => (

@@ -2,6 +2,7 @@ export * from './Arrows';
 export * from './BackIcon';
 export * from './BulbIcon';
 export * from './CloseIcon';
+export * from './CopyIcon';
 export * from './DangerIcon';
 export * from './DownloadIcon';
 export * from './Ellipsis/EllipsisIcon';

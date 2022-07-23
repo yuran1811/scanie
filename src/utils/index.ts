@@ -1,6 +1,7 @@
 export * from './dayjsUsage';
 export * from './judge';
 export * from './preprocessingImg';
+export * from './store';
 export * from './styles';
 
 interface CmpObject extends Object {
@@ -38,4 +39,8 @@ export const shallowObjectCompare = (a: CmpObject, b: CmpObject) => {
   for (let key of keys1) if (a[key] !== b[key]) return false;
 
   return true;
+};
+
+export const copyToClipboard = (data: string) => {
+  navigator.clipboard.writeText(data);
 };

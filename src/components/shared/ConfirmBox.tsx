@@ -1,7 +1,7 @@
+import { Overlay } from '@cpns/shared/Overlay';
 import { DivProps } from '@shared/types';
-import { Overlay } from './Overlay';
-import { createPortal } from 'react-dom';
 import { FC } from 'react';
+import { createPortal } from 'react-dom';
 
 export const ConfirmBox: FC<DivProps> = ({ children, onClick }) => {
   return createPortal(

@@ -1,7 +1,7 @@
-import { ScoresState } from '@shared/types';
+import { ScoreGroupsState } from '@shared/types';
 
-export const defaultScoresStore: ScoresState = {
-  scores: [],
+export const defaultScoresStore: ScoreGroupsState = {
+  scoreGroups: [],
   searchOpts: {
     value: '',
     isSearch: false,

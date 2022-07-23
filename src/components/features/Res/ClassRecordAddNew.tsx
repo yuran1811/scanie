@@ -1,8 +1,10 @@
+import { addScoreGroup } from '@/redux/scoreGroupsSlice';
 import { DivProps } from '@/shared';
 import { ErrorMessage } from '@cpns/interfaces';
 import { Button, Input, ModalBox } from '@cpns/shared';
 import { Dispatch, FC, SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 interface Inputs {
   class: string;
@@ -15,6 +17,8 @@ interface ClassRecordAddNewProps {
 }
 
 export const ClassRecordAddNew: FC<ClassRecordAddNewProps & DivProps> = ({ onClickHandle }) => {
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -22,7 +26,14 @@ export const ClassRecordAddNew: FC<ClassRecordAddNewProps & DivProps> = ({ onCli
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    dispatch(
+      addScoreGroup({
+        ...data,
+        amount: 0,
+        scores: [],
+      })
+    );
+    onClickHandle(false);
   };
 
   return (

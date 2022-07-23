@@ -1,5 +1,5 @@
+import { ErrorContent } from '@cpns/shared';
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { ErrorContent } from './shared';
 
 interface Props {
   children?: ReactNode;

@@ -31,16 +31,17 @@ export const standardize = (result: Tesseract.Page) => {
       const order = pattern.match(/\d+/gi);
       if (!order) return;
 
-      scores[order[0]] = 'blank';
+      scores[+order[0]] = 'blank';
 
       const notChosenAns = pattern.match(/[A-Za-z]+/gi);
       const chosenAns = 'ABCD'.match(new RegExp(`[^${notChosenAns}]`, 'gim'));
 
-      chosenAns && (scores[order[0]] = chosenAns[0]);
+      chosenAns && (scores[+order[0]] = chosenAns[0]);
     });
   });
 
-  console.log(questions, scores);
-
-  return questions.join('\n');
+  return {
+    chosen: scores,
+    rawChosen: questions,
+  };
 };

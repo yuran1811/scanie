@@ -1,12 +1,13 @@
 import { recognize } from '@/utils';
 import { ErrorMessage } from '@cpns/interfaces';
-import { Button, ProgressBar } from '@cpns/shared';
-import ImageUpload from './ImageUpload';
-import TesseractResult from './TesseractResult';
+import { Button, ProgressBar, TextArea } from '@cpns/shared';
 import { useCallback, useRef, useState } from 'react';
 import Tesseract from 'tesseract.js';
+import ImageUpload from './ImageUpload';
+import TesseractResult from './TesseractResult';
 
 export const JudgeContainer = () => {
+  const [answer, setAnswer] = useState('');
   const [recogResult, setRecogResult] = useState<Tesseract.Page | null>(null);
   const [imagePath, setImagePath] = useState('');
   const [isConvert, setConvert] = useState(false);
@@ -63,15 +64,22 @@ export const JudgeContainer = () => {
 
   return (
     <main className="p-8">
-      <ImageUpload
-        imageRef={imageRef}
-        canvasRef={canvasRef}
-        imagePath={imagePath}
-        onChange={handleChange}
-      />
+      <div className="flexcentercol">
+        <ImageUpload
+          imageRef={imageRef}
+          canvasRef={canvasRef}
+          imagePath={imagePath}
+          onChange={handleChange}
+        />
+        <TextArea
+          className="h-[8rem] focus:h-[35rem] border-r-sky-200 border-l-sky-200"
+          placeholder="Answer"
+          onBlur={(e: any) => setAnswer(e.currentTarget.value.toString().trim().toLowerCase())}
+        />
+      </div>
 
       <div className="w-full flex flex-col items-center justify-start mb-12">
-        {isConvert && (
+        {isConvert && !!answer.length && (
           <Button className="font-semibold p-6 m-6 rounded-[1rem]" onClick={handleClick}>
             Convert to text
           </Button>
@@ -84,7 +92,7 @@ export const JudgeContainer = () => {
         {progress.error.isError && <ErrorMessage content={progress.error.errorMessage} />}
       </div>
 
-      <TesseractResult recogResult={recogResult} />
+      <TesseractResult recogResult={recogResult} answer={answer} />
     </main>
   );
 };

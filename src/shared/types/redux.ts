@@ -1,7 +1,23 @@
-export type ScoresType = string[];
+export interface ScoreGroupProps {
+  id: string;
+  amount: number;
+  class: string;
+  subject: string;
+  type: string;
+  scores: ScoreDetailsType;
+}
 
-export interface ScoresState {
-  scores: ScoresType;
+export interface ScoreDetailProps {
+  id: string;
+  name: string;
+  score: number;
+}
+
+export type ScoreGroupsType = ScoreGroupProps[];
+export type ScoreDetailsType = ScoreDetailProps[];
+
+export interface ScoreGroupsState {
+  scoreGroups: ScoreGroupsType;
   searchOpts: {
     value: string;
     isSearch: boolean;
@@ -10,10 +26,11 @@ export interface ScoresState {
     class: boolean;
     subject: boolean;
     type: boolean;
-    sortAmount: string;
+    [key: string]: boolean;
   };
+  sortAmount: string;
 }
 
 export interface RootState {
-  scores: ScoresState;
+  scoreGroups: ScoreGroupsState;
 }

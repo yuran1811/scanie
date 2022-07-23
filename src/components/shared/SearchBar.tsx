@@ -1,5 +1,5 @@
 import { InputProps } from '@shared/types';
-import { Dispatch, FC, SetStateAction, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 interface SearchBarProps {
   // setSearchOpts: Dispatch<
