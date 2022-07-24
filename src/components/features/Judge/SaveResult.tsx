@@ -48,7 +48,7 @@ export const SaveResult: FC<SaveResultProps> = ({ result }) => {
   return (
     <div className="flexcenter w-full flex-wrap gap-6">
       <form
-        className="flexcentercol w-max rounded-[2.6rem] border-[4px] border-sky-200 border-t-transparent p-8 text-center text-[5rem] font-bold line-clamp-1"
+        className="flexcentercol w-max gap-4 rounded-[2.6rem] border-4 border-sky-200 border-t-transparent p-8 text-center text-[5rem] font-bold line-clamp-1"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
@@ -85,13 +85,17 @@ export const SaveResult: FC<SaveResultProps> = ({ result }) => {
           <ErrorMessage className="text-[3rem]" content={errors.groupId.message || ''} />
         )}
 
-        <div className="text-[4rem] font-bold">Score: {result?.score || 0}</div>
-        <div className="text-[4rem] font-bold text-green-500">Correct: {result?.correct || 0}</div>
-        <div className="text-[4rem] font-bold text-zinc-400">
-          Not recognize: {result?.notRecognize || 0}
+        <div className="my-6">
+          <div className="text-[3rem] font-bold text-zinc-400">
+            Not recognize - {result?.notRecognize || 0}
+          </div>
+          <div className="text-[3rem] font-bold text-green-500">
+            Correct - {result?.correct || 0}
+          </div>
+          <div className="text-[3rem] font-bold">Score - {result?.score || 0}</div>
         </div>
 
-        <Button className="!text-[3rem]" type="submit">
+        <Button className="text-[3rem]" type="submit">
           Add
         </Button>
       </form>

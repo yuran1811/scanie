@@ -15,7 +15,7 @@
 - React Router (v6)
 - Redux (Redux Toolkit)
 - Typescript
-- TailwindCSS
+- TailwindCSS, MambaUI
 - TesseractJS
 - Libs: uuid, react-hook-form, react-toastify, ...
 

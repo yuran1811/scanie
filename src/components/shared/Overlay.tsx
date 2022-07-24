@@ -10,7 +10,7 @@ export const Overlay: FC<OverlayProps & DivProps> = ({ zIdx, background, ...othe
   <div
     {...otherProps}
     className={`${zIdx || 'z-10'} fullscreen cursor-pointer ${
-      background || 'bg-slate-700'
-    } opacity-90`}
+      background || 'bg-slate-700/90'
+    }`}
   />
 );

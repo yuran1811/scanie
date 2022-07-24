@@ -19,10 +19,13 @@ export const ResultContainer = () => {
             : 'mx-auto grid w-full grid-cols-1 justify-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:max-w-[75rem]'
         }
       >
-        {(!selectLabel || !selectLabel.length) &&
-          scoreGroups.map((item, index) => (
-            <ItemCard key={item.id || index + item.class + item.subject} data={item} />
-          ))}
+        {(!selectLabel || !selectLabel.length) && (
+          <>
+            {scoreGroups.map((item, index) => (
+              <ItemCard key={item.id || index + item.class + item.subject} data={item} />
+            ))}
+          </>
+        )}
 
         {!!selectLabel.length && (
           <>

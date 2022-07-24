@@ -29,8 +29,9 @@ export const getChosenStatus = (
   } as ChosenStatusType;
 
   Object.keys(answer).forEach((answerKey) => {
-    if (!chosen[answerKey] || /[^ABCD]/gi.test(chosen[answerKey])) {
+    if (!chosen[answerKey] || /[^ABCD]/gi.test(chosen[answerKey]) || !answer[answerKey]) {
       chosenStatus.notRecognize++;
+      return;
     }
 
     if (answer[answerKey] === chosen[answerKey]) {

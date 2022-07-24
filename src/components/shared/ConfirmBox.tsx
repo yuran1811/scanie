@@ -8,7 +8,7 @@ export const ConfirmBox: FC<DivProps> = ({ children, onClick }) => {
     <div className="flexcenter fullscreen z-[100]">
       <Overlay zIdx="1" background="bg-slate-700" onClick={onClick} />
 
-      <div className="absolute top-[12rem] z-[2] max-w-[80%] text-[5rem] text-white">
+      <div className="absolute top-48 z-[2] max-w-[80%] text-[5rem] text-white">
         <div
           className={`${
             '' || ''

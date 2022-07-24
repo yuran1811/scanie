@@ -16,7 +16,7 @@ export const defaultScoresStore: ScoreGroupsState = {
 };
 
 export const ToastDefaultConfig: ToastOptions = {
-  className: 'text-[2.4rem] text-center',
+  className: 'text-[2.5rem] text-center',
   autoClose: 1500,
   closeOnClick: true,
   draggable: true,

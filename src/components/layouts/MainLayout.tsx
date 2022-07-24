@@ -1,3 +1,4 @@
+import { JudgeBubble } from '@cpns/features/Judge/JudgeBubble';
 import { FC, PropsWithChildren } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Footer, Header } from './partials';
@@ -8,6 +9,7 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => (
       <Header />
       <div>{children}</div>
       <Footer />
+      <JudgeBubble />
     </div>
     <div id="modal-container"></div>
     <ToastContainer theme="dark" />

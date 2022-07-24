@@ -3,8 +3,6 @@ import { FC } from 'react';
 
 export const SearchIcon: FC<DivProps> = ({ className }) => (
   <div
-    className={`${
-      className || ''
-    } w-[5rem] h-[5rem] text-white border-current border-[0.6rem] rounded-[50%]`}
+    className={`${className || ''} h-20 w-20 rounded-full border-[6px] border-current text-white`}
   />
 );

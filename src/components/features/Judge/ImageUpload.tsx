@@ -42,12 +42,12 @@ const ImageUpload: FC<ImageUploadProps & InputProps> = ({
 
   return (
     <div className="mb-4 flex w-full flex-col items-center justify-start">
-      <div className="mb-8 flex w-full items-center justify-start rounded-[1rem] border-[0.4rem] border-ct-color sm:w-auto">
+      <div className="mb-8 flex w-full items-center justify-start rounded-[2rem] border-4 border-ct-color sm:w-auto">
         <label className="hidden cursor-pointer px-4 font-semibold sm:block" htmlFor="upload-image">
           Choose images
         </label>
         <input
-          className="w-full flex-1 cursor-pointer bg-ct-color p-4 text-ct-bg-800"
+          className="flex-1 cursor-pointer rounded-[1.4rem] bg-ct-color py-6 px-4 text-ct-bg-800"
           id="upload-image"
           type="file"
           multiple
@@ -56,7 +56,7 @@ const ImageUpload: FC<ImageUploadProps & InputProps> = ({
       </div>
 
       {!!imagePath && (
-        <div className="flexcentercol !hidden gap-6 border-[2px] border-ct-bg-800 p-6">
+        <div className="flexcentercol !hidden gap-6 border-2 border-ct-bg-800 p-6">
           <img ref={imageRef} className="w-full max-w-[50rem]" src={imagePath} />
           <canvas ref={canvasRef} />
         </div>

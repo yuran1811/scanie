@@ -10,9 +10,9 @@ import {
   TrashIcon,
 } from '@cpns/icons';
 import { ErrorMessage } from '@cpns/interfaces';
-import { Button, Input, Label, SearchBar } from '@cpns/shared';
+import { Button, Input, Label, ModalUI, SearchBar } from '@cpns/shared';
 import { RootState, ScoreDetailsType, ScoreGroupProps } from '@shared/types';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,6 +29,9 @@ interface Inputs {
 export const DetailItem: FC = () => {
   const [isAsc, setAsc] = useState(false);
   const [seachValue, setSearchValue] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+
+  const thisItem = useRef<HTMLDivElement>(null);
 
   const { resultId } = useParams();
   const navigate = useNavigate();
@@ -45,8 +48,7 @@ export const DetailItem: FC = () => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     dispatch(updateScoreGroup({ data, groupId: resultId }));
   };
-
-  const addHandle = useCallback(() => {
+  const addHandle = () => {
     if (!resultId) return;
 
     dispatch(
@@ -56,14 +58,22 @@ export const DetailItem: FC = () => {
         score: (Math.random() * 5 + 5).toFixed(1),
       })
     );
-  }, [resultId, scoreGroups]);
-  const deleteHandle = useCallback(() => {
+  };
+  const deleteHandle = (type: string = 'delete') => {
     if (!resultId) return;
 
-    dispatch(deleteScoreGroup(resultId));
-    navigate(-1);
-  }, [resultId, scoreGroups]);
-  const copyHandle = useCallback(() => {
+    if (!deleteConfirm && type === 'open') {
+      setDeleteConfirm(true);
+      return;
+    }
+
+    if (type === 'delete') {
+      setDeleteConfirm(false);
+      dispatch(deleteScoreGroup(resultId));
+      navigate(-1);
+    }
+  };
+  const copyHandle = () => {
     if (resultId) {
       copyToClipboard(resultId);
       toast.success('Copy to clipboard !', {
@@ -71,7 +81,7 @@ export const DetailItem: FC = () => {
         toastId: 'copy-success',
       });
     }
-  }, [resultId]);
+  };
 
   const { scores, group } = useMemo<{ scores: ScoreDetailsType; group: ScoreGroupProps }>(() => {
     const data = scoreGroups.find((item) => item.id + '' === resultId);
@@ -86,15 +96,24 @@ export const DetailItem: FC = () => {
     };
   }, [resultId, scoreGroups, isAsc, seachValue]);
 
+  useEffect(() => {
+    thisItem.current?.scrollIntoView({
+      block: 'start',
+      inline: 'start',
+      behavior: 'smooth',
+    });
+  }, [resultId, deleteConfirm]);
+
   return (
-    <div className="p-4">
+    <div ref={thisItem} className="p-4">
       <div className="flexcentercol">
         <div className="flexcenter m-4 select-none flex-wrap gap-6 p-6">
           <BackIcon className="!my-0 scale-75 text-sky-200" onClick={() => navigate(-1)} />
 
           <Label
-            className="flexcenter cursor-pointer"
+            className="flexcenter cursor-pointer transition-all"
             theme="teal"
+            isActive={isAsc}
             onClick={() => setAsc((s) => !s)}
           >
             Score
@@ -117,7 +136,7 @@ export const DetailItem: FC = () => {
             fill="#f87171"
             width="35"
             height="35"
-            onClick={() => deleteHandle()}
+            onClick={() => deleteHandle('open')}
           />
           <CopyIcon
             className="cursor-pointer"
@@ -128,7 +147,7 @@ export const DetailItem: FC = () => {
           />
         </div>
 
-        <div className="container mx-auto my-12 h-[8rem] w-max overflow-hidden rounded-[3rem] bg-ct-bg-600 transition-all hover:h-[46rem]">
+        <div className="container mx-auto my-12 h-32 w-max overflow-hidden rounded-[3rem] bg-ct-bg-600 transition-all hover:h-[46rem]">
           <div className="m-2 p-4 text-center text-[3rem] font-bold">Amount: {scores.length}</div>
           <form
             className="flexcentercol w-full p-8 text-center text-[5rem] font-bold line-clamp-1"
@@ -182,7 +201,7 @@ export const DetailItem: FC = () => {
               <ErrorMessage className="text-[3rem]" content={errors.type.message || ''} />
             )}
 
-            <Button className="!text-[3.2rem]" type="submit">
+            <Button className="text-[3rem]" type="submit">
               Edit
             </Button>
           </form>
@@ -193,9 +212,9 @@ export const DetailItem: FC = () => {
 
       <div className="flexcentercol container mx-auto h-[50vh] min-h-[50rem] !justify-start gap-6 overflow-y-auto overflow-x-hidden">
         <div className="flexcenter sticky top-0 left-0 mt-6 w-full max-w-[80%] select-none flex-wrap !justify-between bg-ct-bg-700 px-2 transition-all">
-          <div className="m-2 w-[70%] p-4 text-left text-[3.2rem] font-bold line-clamp-1">Name</div>
+          <div className="m-2 w-[70%] p-4 text-left text-[2.5rem] font-bold line-clamp-1">Name</div>
           <div className="flexcenter w-[26%] flex-wrap">
-            <div className="m-2 p-4 text-center text-[2.9rem] font-bold">Score</div>
+            <div className="m-2 p-4 text-center text-[2.5rem] font-bold">Score</div>
           </div>
         </div>
 
@@ -208,6 +227,19 @@ export const DetailItem: FC = () => {
           />
         ))}
       </div>
+
+      {deleteConfirm && (
+        <ModalUI
+          title="Delete action"
+          onClick={() => deleteHandle()}
+          cancelHandle={() => setDeleteConfirm(false)}
+        >
+          <div className="flexcentercol mt-6">
+            <p className="text-gray-400">Delete the groups ?</p>
+            <p className="text-gray-400">( All the scores will be removed )</p>
+          </div>
+        </ModalUI>
+      )}
     </div>
   );
 };

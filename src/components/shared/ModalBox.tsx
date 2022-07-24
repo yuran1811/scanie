@@ -4,9 +4,9 @@ import { FC } from 'react';
 
 export const ModalBox: FC<DivProps> = ({ className, onClick, children }) => (
   <div className="flexcenter fullscreen z-[11]">
-    <Overlay zIdx="1" background="bg-slate-800" onClick={onClick} />
+    <Overlay zIdx="z-1" background="bg-slate-900/90" onClick={onClick} />
 
-    <div className="absolute top-[12rem] z-[2] max-w-[80%] text-[5rem] text-white">
+    <div className="absolute top-48 z-[2] max-w-[80%] text-[5rem] text-white">
       <div
         className={`${
           className || ''

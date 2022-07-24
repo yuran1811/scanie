@@ -8,8 +8,10 @@ export * from './Label';
 export * from './LoadingCard';
 export * from './ModalBox';
 export * from './ModalBoxHeader';
+export * from './ModalUI';
 export * from './Overlay';
 export * from './SearchBar';
 export * from './TextArea';
+export * from './Tooltip';
 
 export { default as ProgressBar } from './ProgressBar';

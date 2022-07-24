@@ -8,10 +8,10 @@ export const publicRoutes: RoutesType = [
     path: routes.home,
     component: HomePage || ErrorContent,
   },
-  {
-    path: routes.judge,
-    component: JudgePage || ErrorContent,
-  },
+  // {
+  //   path: routes.judge,
+  //   component: JudgePage || ErrorContent,
+  // },
   {
     path: routes.results,
     component: ResultPage || ErrorContent,

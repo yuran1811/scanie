@@ -91,7 +91,7 @@ export const ClassRecordAddNew: FC<ClassRecordAddNewProps & DivProps> = ({ onCli
           <ErrorMessage className="text-[3rem]" content={errors.type.message || ''} />
         )}
 
-        <Button className="!text-[3.2rem]" type="submit">
+        <Button className="text-[3rem]" type="submit">
           Add
         </Button>
       </form>
