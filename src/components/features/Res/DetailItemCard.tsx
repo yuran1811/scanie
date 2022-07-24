@@ -38,13 +38,13 @@ export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups }) => 
 
   return (
     <div
-      className={`flexcenter !justify-between flex-wrap cursor-pointer select-none w-full max-w-[80%] mt-8 p-4 border-[4px] ${style[theme]} rounded-[2rem] transition-all`}
+      className={`flexcenter mt-8 w-full max-w-[80%] cursor-pointer select-none flex-wrap !justify-between border-[4px] p-4 ${style[theme]} rounded-[2rem] transition-all`}
     >
-      <div className="w-[70%] md:w-[50%] text-left text-[3.2rem] font-bold p-4 m-2 line-clamp-2">
+      <div className="m-2 w-[70%] p-4 text-left text-[3.2rem] font-bold line-clamp-2 md:w-[50%]">
         {data.name}
       </div>
-      <div className="flex-1 flexcenter flex-wrap">
-        <div className="text-center text-[2.9rem] font-bold p-4 m-2">{data.score}</div>
+      <div className="flexcenter flex-1 flex-wrap">
+        <div className="m-2 p-4 text-center text-[2.9rem] font-bold line-clamp-1">{data.score}</div>
         <TrashIcon
           className="cursor-pointer"
           fill="#f87171"

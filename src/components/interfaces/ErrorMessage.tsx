@@ -8,7 +8,7 @@ interface ErrorMessageProps {
 
 export const ErrorMessage: FC<ErrorMessageProps & DivProps> = ({ content, extraStyle }) => (
   <div
-    className={`px-6 py-4 rounded-[2rem] bg-rose-600 text-rose-200 text-center font-semibold ${
+    className={`rounded-[2rem] bg-rose-600 px-6 py-4 text-center font-semibold text-rose-200 ${
       extraStyle || ''
     }`}
   >

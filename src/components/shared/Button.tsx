@@ -4,7 +4,7 @@ export const Button: FC<HTMLProps<HTMLButtonElement>> = ({ children, className, 
   <button
     className={`${
       className || ''
-    } px-6 py-4 m-6 rounded-[2rem] hover:bg-ct-color bg-ct-bg-600 hover:text-ct-bg-800 text-ct-color border-[4px] border-ct-color hover:border-ct-bg-800 transition-all`}
+    } m-6 rounded-[2rem] border-[4px] border-ct-color bg-ct-bg-600 px-6 py-4 text-ct-color transition-all hover:border-ct-bg-800 hover:bg-ct-color hover:text-ct-bg-800`}
     onClick={onClick}
   >
     {children}

@@ -40,7 +40,7 @@ export const ClassRecordAddNew: FC<ClassRecordAddNewProps & DivProps> = ({ onCli
     <ModalBox onClick={() => onClickHandle(false)}>
       <div className="w-full p-4 text-[4rem] text-ct-color line-clamp-1">New class record</div>
       <form
-        className="flexcentercol p-8 font-bold text-[5rem] text-center w-full line-clamp-1"
+        className="flexcentercol w-full p-8 text-center text-[5rem] font-bold line-clamp-1"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input

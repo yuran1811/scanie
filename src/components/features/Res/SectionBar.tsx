@@ -16,6 +16,9 @@ export const SectionBar = () => {
     dispatch(
       setFilter({
         ...filter,
+        class: false,
+        subject: false,
+        type: false,
         [option]: !filter[option],
       })
     );
@@ -23,7 +26,7 @@ export const SectionBar = () => {
 
   return (
     <div className="flexcentercol">
-      <div className="select-none flexcenter flex-wrap p-8 m-4 gap-4">
+      <div className="flexcenter m-4 select-none flex-wrap gap-4 p-8">
         <Label
           className="cursor-pointer"
           isActive={filter.class}
@@ -57,7 +60,7 @@ export const SectionBar = () => {
           onClick={() => setAddNew((s) => !s)}
         />
       </div>
-      <SearchBar />
+      {/* <SearchBar /> */}
 
       {addNew && <ClassRecordAddNew onClickHandle={setAddNew} />}
     </div>

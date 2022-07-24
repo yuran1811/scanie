@@ -1,10 +1,6 @@
 import { DivProps } from '@shared/types';
 import { FC } from 'react';
 
-interface ErrorTextProps {
-  extraStyle: string;
-}
-
-export const ErrorText: FC<ErrorTextProps & DivProps> = ({ children, extraStyle }) => (
-  <div className={`text-white text-center font-bold ${extraStyle || ''}`}>{children}</div>
+export const ErrorText: FC<DivProps> = ({ children, className }) => (
+  <div className={`text-center font-bold text-white ${className || ''}`}>{children}</div>
 );

@@ -72,15 +72,15 @@ export const JudgeContainer = () => {
           onChange={handleChange}
         />
         <TextArea
-          className="h-[8rem] focus:h-[35rem] border-r-sky-200 border-l-sky-200"
+          className="h-[12rem] border-r-sky-200 border-l-sky-200 focus:h-[35rem]"
           placeholder="Answer"
           onBlur={(e: any) => setAnswer(e.currentTarget.value.toString().trim().toLowerCase())}
         />
       </div>
 
-      <div className="w-full flex flex-col items-center justify-start mb-12">
+      <div className="mb-12 flex w-full flex-col items-center justify-start">
         {isConvert && !!answer.length && (
-          <Button className="font-semibold p-6 m-6 rounded-[1rem]" onClick={handleClick}>
+          <Button className="m-6 rounded-[1rem] p-6 font-semibold" onClick={handleClick}>
             Convert to text
           </Button>
         )}

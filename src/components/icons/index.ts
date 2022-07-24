@@ -6,6 +6,7 @@ export * from './CopyIcon';
 export * from './DangerIcon';
 export * from './DownloadIcon';
 export * from './Ellipsis/EllipsisIcon';
+export * from './Filters';
 export * from './GroupIcon';
 export * from './HashtagIcon';
 export * from './IgnoreIcon';

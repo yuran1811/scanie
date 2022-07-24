@@ -1,12 +1,15 @@
 import { addScoreToGroup } from '@/redux/scoreGroupsSlice';
+import { ChosenStatusType, ToastDefaultConfig } from '@/shared';
 import { ErrorMessage } from '@cpns/interfaces';
 import { Button, Input } from '@cpns/shared';
 import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface SaveResultProps {
-  score: number;
+  result: ChosenStatusType | null;
 }
 
 interface Inputs {
@@ -14,7 +17,7 @@ interface Inputs {
   groupId: string;
 }
 
-export const SaveResult: FC<SaveResultProps> = ({ score }) => {
+export const SaveResult: FC<SaveResultProps> = ({ result }) => {
   const dispatch = useDispatch();
 
   const {
@@ -25,25 +28,31 @@ export const SaveResult: FC<SaveResultProps> = ({ score }) => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    if (!result) return;
+
     dispatch(
       addScoreToGroup({
         groupId: data.groupId,
         name: data.name,
-        score,
+        score: result.score,
       })
     );
+
+    toast.success('Add successfully !', {
+      ...ToastDefaultConfig,
+    });
 
     reset();
   };
 
   return (
-    <div className="flexcenter flex-wrap w-full gap-6">
+    <div className="flexcenter w-full flex-wrap gap-6">
       <form
-        className="flexcentercol p-8 font-bold text-[5rem] text-center w-full line-clamp-1"
+        className="flexcentercol w-max rounded-[2.6rem] border-[4px] border-sky-200 border-t-transparent p-8 text-center text-[5rem] font-bold line-clamp-1"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
-          className="border-b-sky-200 !max-w-[40rem]"
+          className="!max-w-[40rem] border-b-sky-200"
           placeholder="Name"
           defaultValue=""
           formHandle={{
@@ -60,7 +69,7 @@ export const SaveResult: FC<SaveResultProps> = ({ score }) => {
         )}
 
         <Input
-          className="border-b-sky-200 !max-w-[20rem]"
+          className="!max-w-[20rem] border-b-sky-200"
           placeholder="Group Id"
           defaultValue=""
           formHandle={{
@@ -76,9 +85,15 @@ export const SaveResult: FC<SaveResultProps> = ({ score }) => {
           <ErrorMessage className="text-[3rem]" content={errors.groupId.message || ''} />
         )}
 
-        <div className="font-bold text-[4rem]">{score}</div>
+        <div className="text-[4rem] font-bold">Score: {result?.score || 0}</div>
+        <div className="text-[4rem] font-bold text-green-500">Correct: {result?.correct || 0}</div>
+        <div className="text-[4rem] font-bold text-zinc-400">
+          Not recognize: {result?.notRecognize || 0}
+        </div>
 
-        <Button type="submit" />
+        <Button className="!text-[3rem]" type="submit">
+          Add
+        </Button>
       </form>
     </div>
   );

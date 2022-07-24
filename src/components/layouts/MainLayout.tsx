@@ -1,14 +1,16 @@
 import { FC, PropsWithChildren } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Footer, Header } from './partials';
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => (
   <>
-    <div className="relative fullsize overflow-x-hidden text-[3rem] text-ct-color bg-ct-bg-800">
+    <div className="fullsize relative overflow-x-hidden bg-ct-bg-800 text-[3rem] text-ct-color">
       <Header />
       <div>{children}</div>
       <Footer />
     </div>
     <div id="modal-container"></div>
+    <ToastContainer theme="dark" />
   </>
 );
 

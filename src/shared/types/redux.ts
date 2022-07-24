@@ -5,6 +5,7 @@ export interface ScoreGroupProps {
   subject: string;
   type: string;
   scores: ScoreDetailsType;
+  [key: string]: any;
 }
 
 export interface ScoreDetailProps {

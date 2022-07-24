@@ -3,13 +3,13 @@ import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 export const Header: FC = () => (
-  <header className="z-[100] sticky top-0 left-0 w-full bg-ct-bg-800 border-b-[2px] border-ct-color p-4 flex flex-wrap items-center justify-start">
+  <header className="sticky top-0 left-0 z-[100] flex w-full flex-wrap items-center justify-start border-b-[2px] border-ct-color bg-ct-bg-800 p-4">
     {publicRoutes.map(({ path: { index } }) => (
       <NavLink
         key={index}
         to={`/${index}`}
         className={({ isActive }) =>
-          `w-full sm:w-auto font-semibold text-center capitalize p-4 mx-4 text-ct-color ${
+          `mx-4 w-full p-4 text-center font-semibold capitalize text-ct-color sm:w-auto ${
             isActive ? 'underline underline-offset-8' : ''
           }`
         }

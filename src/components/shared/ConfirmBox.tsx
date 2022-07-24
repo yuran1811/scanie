@@ -5,14 +5,14 @@ import { createPortal } from 'react-dom';
 
 export const ConfirmBox: FC<DivProps> = ({ children, onClick }) => {
   return createPortal(
-    <div className="z-[100] flexcenter fullscreen">
+    <div className="flexcenter fullscreen z-[100]">
       <Overlay zIdx="1" background="bg-slate-700" onClick={onClick} />
 
-      <div className="z-[2] absolute top-[12rem] max-w-[80%] text-[5rem] text-white">
+      <div className="absolute top-[12rem] z-[2] max-w-[80%] text-[5rem] text-white">
         <div
           className={`${
             '' || ''
-          } max-h-[calc(100vh-15rem)] font-bold text-center text-rose-600 bg-indigo-300 scrollY rounded-[3rem]`}
+          } scrollY max-h-[calc(100vh-15rem)] rounded-[3rem] bg-indigo-300 text-center font-bold text-rose-600`}
         >
           {children}
         </div>

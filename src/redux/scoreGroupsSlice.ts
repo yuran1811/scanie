@@ -29,34 +29,36 @@ const { actions, reducer } = createSlice({
       state.scoreGroups.push({ ...payload, id: uuidv4() });
     },
     updateScoreGroup: (state, { payload }) => {
-      let thisScore = state.scoreGroups.find((score) => score.id === payload);
-      thisScore && Object.assign(thisScore, payload.data);
+      const idx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
+      idx !== -1 &&
+        (state.scoreGroups[idx] = Object.assign(
+          {},
+          { ...state.scoreGroups[idx], ...payload.data }
+        ));
     },
     deleteScoreGroup: (state, { payload }) => {
-      const scoreIdx = state.scoreGroups.findIndex((score) => score.id === payload);
-      scoreIdx !== -1 && state.scoreGroups.splice(scoreIdx, 1);
+      const idx = state.scoreGroups.findIndex((score) => score.id === payload);
+      idx !== -1 && state.scoreGroups.splice(idx, 1);
     },
 
     addScoreToGroup: (state, { payload }) => {
-      const thisGroupIdx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
-      if (thisGroupIdx === -1) return;
+      const idx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
+      if (idx === -1) return;
 
-      state.scoreGroups[thisGroupIdx].scores.push({
+      state.scoreGroups[idx].scores.push({
         id: uuidv4(),
         name: payload.name,
         score: payload.score,
       });
     },
     deleteScoreFromGroup: (state, { payload }) => {
-      const thisGroupIdx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
-      if (thisGroupIdx === -1) return;
+      const idx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
+      if (idx === -1) return;
 
-      const thisIdx = state.scoreGroups[thisGroupIdx].scores.findIndex(
-        (item) => item.id === payload.id
-      );
+      const thisIdx = state.scoreGroups[idx].scores.findIndex((item) => item.id === payload.id);
       if (thisIdx === -1) return;
 
-      state.scoreGroups[thisGroupIdx].scores.splice(thisIdx, 1);
+      state.scoreGroups[idx].scores.splice(thisIdx, 1);
     },
 
     setFilter: (state, { payload }) => {

@@ -7,14 +7,14 @@ interface ProgressBarProps {
 
 const ProgressBar: FC<ProgressBarProps> = ({ value, status }) => (
   <div className="w-full max-w-[50rem] p-6">
-    <div className="relative w-full h-[4rem] top-0 left-0 bg-ct-bg-700 rounded-[2.5rem] overflow-hidden">
+    <div className="relative top-0 left-0 h-[4rem] w-full overflow-hidden rounded-[2.5rem] bg-ct-bg-700">
       <div
-        className="h-full rounded-[2.5rem] bg-teal-400 transition-all animate-pulse"
+        className="h-full animate-pulse rounded-[2.5rem] bg-teal-400 transition-all"
         style={{ width: `calc(100%*${+value})` }}
       />
     </div>
 
-    {!!status && <div className="text-[2.4rem] text-center capitalize p-2">{status}</div>}
+    {!!status && <div className="p-2 text-center text-[2.4rem] capitalize">{status}</div>}
   </div>
 );
 
