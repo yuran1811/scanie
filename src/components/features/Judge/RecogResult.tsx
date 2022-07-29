@@ -1,5 +1,6 @@
+import { deleteImgSource } from '@/redux/imgSourcesSlice';
 import { addScoreToGroup } from '@/redux/scoreGroupsSlice';
-import { ChosenStatusType, ToastDefaultConfig } from '@/shared';
+import { RecogResultType, ToastDefaultConfig } from '@/shared';
 import { ErrorMessage } from '@cpns/interfaces';
 import { Button, Input } from '@cpns/shared';
 import { FC } from 'react';
@@ -8,8 +9,9 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-interface SaveResultProps {
-  result: ChosenStatusType | null;
+interface RecogResultProps {
+  recogId: string;
+  recogResult: RecogResultType;
 }
 
 interface Inputs {
@@ -17,7 +19,7 @@ interface Inputs {
   groupId: string;
 }
 
-export const SaveResult: FC<SaveResultProps> = ({ result }) => {
+export const RecogResult: FC<RecogResultProps> = ({ recogId, recogResult }) => {
   const dispatch = useDispatch();
 
   const {
@@ -28,31 +30,28 @@ export const SaveResult: FC<SaveResultProps> = ({ result }) => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    if (!result) return;
-
+    if (!recogResult) return;
     dispatch(
       addScoreToGroup({
         groupId: data.groupId,
         name: data.name,
-        score: result.score,
+        judgeResult: { score: 0, correct: 0, notRecognize: 0, total: 0 },
+        recogResult,
       })
     );
-
-    toast.success('Add successfully !', {
-      ...ToastDefaultConfig,
-    });
-
+    dispatch(deleteImgSource(recogId));
+    toast.success('Add successfully !', { ...ToastDefaultConfig });
     reset();
   };
 
   return (
     <div className="flexcenter w-full flex-wrap gap-6">
       <form
-        className="flexcentercol w-max gap-4 rounded-[2.6rem] border-4 border-sky-200 border-t-transparent p-8 text-center text-[5rem] font-bold line-clamp-1"
+        className="flexcentercol w-max gap-4 p-8 text-center text-[5rem] font-bold line-clamp-1"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
-          className="!max-w-[40rem] border-b-sky-200"
+          className="!max-w-[30rem] border-b-sky-200"
           placeholder="Name"
           defaultValue=""
           formHandle={{
@@ -84,16 +83,6 @@ export const SaveResult: FC<SaveResultProps> = ({ result }) => {
         {errors?.groupId && (
           <ErrorMessage className="text-[3rem]" content={errors.groupId.message || ''} />
         )}
-
-        <div className="my-6">
-          <div className="text-[3rem] font-bold text-zinc-400">
-            Not recognize - {result?.notRecognize || 0}
-          </div>
-          <div className="text-[3rem] font-bold text-green-500">
-            Correct - {result?.correct || 0}
-          </div>
-          <div className="text-[3rem] font-bold">Score - {result?.score || 0}</div>
-        </div>
 
         <Button className="text-[3rem]" type="submit">
           Add

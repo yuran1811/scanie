@@ -1,6 +1,5 @@
+import { defaultScoresStore, fakeData, ScoreDetailProps, ScoreGroupsState } from '@/shared';
 import { createSlice } from '@reduxjs/toolkit';
-import { defaultScoresStore, fakeData } from '@shared/constants';
-import { ScoreGroupsState } from '@shared/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const { actions, reducer } = createSlice({
@@ -41,15 +40,32 @@ const { actions, reducer } = createSlice({
       idx !== -1 && state.scoreGroups.splice(idx, 1);
     },
 
-    addScoreToGroup: (state, { payload }) => {
+    addScoreToGroup: (
+      state,
+      { payload }: { payload: Omit<ScoreDetailProps, 'id' | 'answerId'> & { groupId: string } }
+    ) => {
       const idx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
       if (idx === -1) return;
 
       state.scoreGroups[idx].scores.push({
         id: uuidv4(),
         name: payload.name,
-        score: payload.score,
+        judgeResult: payload.judgeResult,
+        recogResult: payload.recogResult,
+        answerId: '',
       });
+    },
+    updateScoreInGroup: (state, { payload }) => {
+      const idx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
+      if (idx === -1) return;
+
+      const thisIdx = state.scoreGroups[idx].scores.findIndex((item) => item.id === payload.id);
+      if (thisIdx === -1) return;
+
+      state.scoreGroups[idx].scores[thisIdx] = Object.assign(
+        {},
+        { ...state.scoreGroups[idx].scores[thisIdx], ...payload.data }
+      );
     },
     deleteScoreFromGroup: (state, { payload }) => {
       const idx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
@@ -75,6 +91,7 @@ export const {
   deleteScoreGroup,
 
   addScoreToGroup,
+  updateScoreInGroup,
   deleteScoreFromGroup,
 
   setFilter,

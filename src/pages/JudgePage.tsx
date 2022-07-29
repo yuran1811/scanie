@@ -1,4 +1,4 @@
-import { JudgeContainer } from '@cpns/features/Judge/JudgeContainer';
+import { RecogUpload } from '@cpns/features/Judge/RecogUpload';
 import { FC } from 'react';
 
-export const JudgePage: FC = () => <JudgeContainer />;
+export const JudgePage: FC = () => <RecogUpload />;

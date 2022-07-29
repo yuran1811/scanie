@@ -1,15 +1,16 @@
-import { deleteScoreFromGroup } from '@/redux/scoreGroupsSlice';
-import { averageScore } from '@/utils';
+import { deleteScoreFromGroup, updateScoreInGroup } from '@/redux/scoreGroupsSlice';
+import { averageScore, getChosenStatus, standardize, standardizeAnswer } from '@/utils';
 import { TrashIcon } from '@cpns/icons';
-import { ModalUI } from '@cpns/shared';
+import { Button, Input, ModalUI } from '@cpns/shared';
 import { ScoreDetailProps, ScoreGroupsType } from '@shared/types';
-import { FC, useCallback, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import TesseractResult from '../Judge/TesseractResult';
 
 interface ItemCardProps {
   data: ScoreDetailProps;
-  groupId: string;
   groups: ScoreGroupsType;
+  groupId: string;
 }
 
 const style = {
@@ -24,39 +25,70 @@ const style = {
 };
 
 export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups }) => {
+  const [showMore, setShowMore] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
-
-  const theme = averageScore.check(+data.score);
 
   const dispatch = useDispatch();
 
-  const deleteHandle = useCallback(
-    (e: any, type: string = 'delete') => {
-      e.stopPropagation();
-      if (!groupId) return;
+  const theme = averageScore.check(+(data.judgeResult?.score || 0));
 
-      if (!deleteConfirm && type === 'open') {
-        setDeleteConfirm(true);
-        return;
-      }
+  const editNameHandle = (e: FormEvent<HTMLInputElement>) => {
+    dispatch(
+      updateScoreInGroup({
+        groupId,
+        id: data.id,
+        data: {
+          name: e.currentTarget.value,
+        },
+      })
+    );
+  };
+  const deleteHandle = (e: any, type: string = 'delete') => {
+    e.stopPropagation();
+    if (!groupId) return;
 
-      if (type === 'delete') {
-        setDeleteConfirm(false);
-        dispatch(deleteScoreFromGroup({ groupId, id: data.id }));
-      }
-    },
-    [groupId, groups]
-  );
+    if (!deleteConfirm && type === 'open') {
+      setDeleteConfirm(true);
+      return;
+    }
+
+    if (type === 'delete') {
+      setDeleteConfirm(false);
+      dispatch(deleteScoreFromGroup({ groupId, id: data.id }));
+    }
+  };
+  const judgeHandle = () => {
+    const thisGroup = groups.find((_) => _.id === groupId);
+    if (!thisGroup) return;
+
+    if (!data.recogResult.length) return;
+
+    const { chosen, rawChosen } = standardize(data.recogResult);
+    const { answerData, answerLength } = standardizeAnswer(thisGroup.rawAnswer);
+    const judgeResult = getChosenStatus(chosen, answerData, answerLength);
+
+    dispatch(updateScoreInGroup({ groupId, id: data.id, data: { judgeResult } }));
+  };
 
   return (
     <div
-      className={`flexcenter mt-8 w-full max-w-[80%] cursor-pointer select-none flex-wrap !justify-between border-4 p-4 ${style[theme]} rounded-[2rem] transition-all`}
+      className={`flexcenter scrollY mt-8 w-full max-w-[80%] cursor-pointer select-none flex-wrap !justify-between rounded-[2rem] border-4 transition-all ${style[theme]}`}
+      onClick={() => setShowMore((s) => !s)}
+      onMouseLeave={() => setShowMore(false)}
     >
-      <div className="m-2 w-[70%] p-4 text-left text-[2.5rem] font-bold line-clamp-2 md:w-1/2">
-        {data.name}
+      <div className="m-2 w-1/2 px-6 py-4 text-left text-[2.5rem] font-bold line-clamp-2 md:w-[70%]">
+        <Input
+          className="max-w-full bg-transparent text-current"
+          value={data.name}
+          disabled={!showMore}
+          onChange={(e) => editNameHandle(e)}
+          onClick={(e) => e.stopPropagation()}
+        />
       </div>
-      <div className="flexcenter flex-1 flex-wrap">
-        <div className="m-2 p-4 text-center text-[2.5rem] font-bold line-clamp-1">{data.score}</div>
+      <div className="flexcenter flex-1 flex-wrap !justify-end px-6">
+        <div className="m-2 p-4 text-center text-[2.5rem] font-bold line-clamp-1">
+          {+(data.judgeResult?.score || 0).toFixed(2)}
+        </div>
         <TrashIcon
           className="cursor-pointer"
           fill="#f87171"
@@ -64,6 +96,23 @@ export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups }) => 
           height="30"
           onClick={(e) => deleteHandle(e, 'open')}
         />
+      </div>
+
+      <div
+        className={`h-0 w-full overflow-hidden bg-gray-900 text-gray-100 transition-all ${
+          showMore ? 'h-[40rem] md:h-[22rem]' : ''
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flexcentercol mx-auto w-full max-w-[45rem] origin-top p-6 md:flex-row">
+          <div className="flexcentercol w-1/2">
+            <Input className="max-w-[10rem]" disabled={!showMore} />
+            <Button onClick={() => judgeHandle()}>Judge</Button>
+          </div>
+          <div className="flex-1">
+            <TesseractResult data={data} />
+          </div>
+        </div>
       </div>
 
       {deleteConfirm && (

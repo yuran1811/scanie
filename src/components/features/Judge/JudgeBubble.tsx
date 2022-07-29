@@ -1,4 +1,3 @@
-import { Overlay, Tooltip } from '@cpns/shared';
 import Tippy from '@tippyjs/react/headless';
 import { useState } from 'react';
 import { JudgeContainer } from './JudgeContainer';

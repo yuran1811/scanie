@@ -1,65 +1,67 @@
-import { preprocessImage } from '@/utils';
+import { addImgSource } from '@/redux/imgSourcesSlice';
+import { Button } from '@cpns/shared';
 import { InputProps } from '@shared/types';
-import { FC, RefObject, useEffect } from 'react';
+import { FC, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-interface ImageUploadProps {
-  isShow?: boolean;
-  imagePath: string;
-  imageRef: RefObject<HTMLImageElement>;
-  canvasRef: RefObject<HTMLCanvasElement>;
-}
+interface ImageUploadProps {}
 
-const ImageUpload: FC<ImageUploadProps & InputProps> = ({
-  imageRef,
-  canvasRef,
-  imagePath,
-  onChange,
-}) => {
-  useEffect(() => {
-    if (!canvasRef.current || !imageRef.current) return;
+const ImageUpload: FC<ImageUploadProps & InputProps> = () => {
+  const [canUpload, setCanUpload] = useState(false);
+  const [urls, setUrls] = useState<string[]>([]);
 
-    canvasRef.current.width = 500;
-    canvasRef.current.height = 375;
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    const ctx = canvasRef.current.getContext('2d');
-    if (!ctx) return;
+  const dispatch = useDispatch();
 
-    const img = new Image(canvasRef.current.width, canvasRef.current.height);
-    img.src = imagePath;
-    img.onload = () => {
-      if (!canvasRef.current) return;
+  const uploadHandle = () => {
+    urls.forEach((url) => dispatch(addImgSource({ url })));
 
-      canvasRef.current.width = img.naturalWidth;
-      canvasRef.current.height = img.naturalHeight;
+    inputRef.current && (inputRef.current.value = '');
+    setCanUpload(false);
+  };
 
-      ctx.drawImage(img, 0, 0);
-      const preprocessedImage = preprocessImage(canvasRef.current);
-      if (!preprocessedImage) return;
+  const handleChange = (e: any) => {
+    urls.forEach((url) => URL.revokeObjectURL(url));
 
-      ctx.putImageData(preprocessedImage, 0, 0);
-    };
-  }, [imagePath]);
+    const { files } = e.target;
+
+    if (!files.length) {
+      setCanUpload(false);
+      return;
+    }
+
+    setCanUpload(true);
+
+    const tmpUrls = [] as string[];
+    for (const file of files) {
+      const url = URL.createObjectURL(file);
+      tmpUrls.push(url);
+    }
+
+    setUrls(tmpUrls);
+  };
 
   return (
-    <div className="mb-4 flex w-full flex-col items-center justify-start">
-      <div className="mb-8 flex w-full items-center justify-start rounded-[2rem] border-4 border-ct-color sm:w-auto">
+    <div className="mb-4 flex w-full max-w-[35rem] flex-col items-center justify-start">
+      <div className="mb-8 flex w-full items-center justify-start rounded-[2rem] border-4 border-ct-color">
         <label className="hidden cursor-pointer px-4 font-semibold sm:block" htmlFor="upload-image">
           Choose images
         </label>
         <input
+          ref={inputRef}
           className="flex-1 cursor-pointer rounded-[1.4rem] bg-ct-color py-6 px-4 text-ct-bg-800"
           id="upload-image"
           type="file"
           multiple
-          onChange={onChange}
+          onChange={handleChange}
         />
       </div>
 
-      {!!imagePath && (
-        <div className="flexcentercol !hidden gap-6 border-2 border-ct-bg-800 p-6">
-          <img ref={imageRef} className="w-full max-w-[50rem]" src={imagePath} />
-          <canvas ref={canvasRef} />
-        </div>
+      {canUpload && (
+        <Button className="m-6 rounded-[1rem] p-6 text-[3rem] font-semibold" onClick={uploadHandle}>
+          Upload
+        </Button>
       )}
     </div>
   );

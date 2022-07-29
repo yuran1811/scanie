@@ -22,7 +22,7 @@ export const ResultContainer = () => {
         {(!selectLabel || !selectLabel.length) && (
           <>
             {scoreGroups.map((item, index) => (
-              <ItemCard key={item.id || index + item.class + item.subject} data={item} />
+              <ItemCard key={item.id || `${index} : ${item.class} - ${item.subject}`} data={item} />
             ))}
           </>
         )}

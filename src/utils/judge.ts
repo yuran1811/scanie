@@ -1,6 +1,5 @@
-import { ChosenStatusType, ScoreGroupsType } from '@shared/types';
-import { Slide } from 'react-toastify';
-import Tesseract from 'tesseract.js';
+import { ChosenStatusType, RecogResultType, ScoreGroupsType } from '@/shared';
+import Tesseract, { Line } from 'tesseract.js';
 
 export const recognize = async (img: string, callback: CallableFunction) => {
   try {
@@ -41,11 +40,13 @@ export const getChosenStatus = (
 
   chosenStatus.score = (chosenStatus.correct * 10) / length;
 
+  console.log(chosen, answer);
+
   return chosenStatus;
 };
 
-export const standardize = (result: Tesseract.Page) => {
-  const questions = result.lines.map((_) =>
+export const standardize = (lines: RecogResultType) => {
+  const questions = lines.map((_) =>
     _.text
       .trim()
       .replace(/[\n\t]/g, '')
@@ -65,7 +66,7 @@ export const standardize = (result: Tesseract.Page) => {
       const notChosenAns = pattern.match(/[A-Za-z]+/gi);
       const chosenAns = 'ABCD'.match(new RegExp(`[^${notChosenAns}]`, 'gim'));
 
-      chosenAns && (scores[+order[0]] = chosenAns[0]);
+      chosenAns && (scores[+order[0]] = chosenAns[0].toLowerCase());
     });
   });
 
@@ -81,7 +82,9 @@ export const standardizeAnswer = (answer: string) => {
 
   rawAnswer.forEach((item) => {
     const x = item.split('.');
-    answerData[x[0]] = x[1].toUpperCase();
+    if (x.length < 2) return;
+
+    answerData[x[0]] = x[1].toLowerCase();
   });
 
   return {

@@ -11,6 +11,7 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => (
       <Footer />
       <JudgeBubble />
     </div>
+
     <div id="modal-container"></div>
     <ToastContainer theme="dark" />
   </>

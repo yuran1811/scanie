@@ -10,7 +10,7 @@ import {
   TrashIcon,
 } from '@cpns/icons';
 import { ErrorMessage } from '@cpns/interfaces';
-import { Button, Input, Label, ModalUI, SearchBar } from '@cpns/shared';
+import { Button, Input, Label, ModalUI, SearchBar, TextArea } from '@cpns/shared';
 import { RootState, ScoreDetailsType, ScoreGroupProps } from '@shared/types';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -24,10 +24,12 @@ interface Inputs {
   class: string;
   type: string;
   subject: string;
+  answer: string;
 }
 
 export const DetailItem: FC = () => {
   const [isAsc, setAsc] = useState(false);
+  const [answer, setAnswer] = useState('');
   const [seachValue, setSearchValue] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
@@ -46,18 +48,23 @@ export const DetailItem: FC = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(updateScoreGroup({ data, groupId: resultId }));
-  };
-  const addHandle = () => {
-    if (!resultId) return;
-
     dispatch(
-      addScoreToGroup({
+      updateScoreGroup({
+        data: { ...data, rawAnswer: answer?.toString()?.trim()?.toLowerCase() || '' },
         groupId: resultId,
-        name: 'New ' + (Math.random() * 5 + 5).toFixed(1),
-        score: (Math.random() * 5 + 5).toFixed(1),
       })
     );
+  };
+  const addHandle = () => {
+    // if (!resultId) return;
+    // dispatch(
+    //   addScoreToGroup({
+    //     groupId: resultId,
+    //     name: 'New ' + (Math.random() * 5 + 5).toFixed(1),
+    //     score: (Math.random() * 5 + 5).toFixed(1),
+    //     recogResult: null,
+    //   })
+    // );
   };
   const deleteHandle = (type: string = 'delete') => {
     if (!resultId) return;
@@ -87,11 +94,17 @@ export const DetailItem: FC = () => {
     const data = scoreGroups.find((item) => item.id + '' === resultId);
     if (!data) return { scores: [], group: {} as ScoreGroupProps };
 
+    setAnswer(data?.rawAnswer || '');
+
     return {
       scores:
         [...data?.scores]
           ?.filter((item) => item.name.toLowerCase().includes(seachValue))
-          ?.sort((a, b) => (isAsc ? a.score - b.score : b.score - a.score)) || [],
+          ?.sort((a, b) =>
+            isAsc
+              ? +a.judgeResult.score - +b.judgeResult.score
+              : +b.judgeResult.score - +a.judgeResult.score
+          ) || [],
       group: data,
     };
   }, [resultId, scoreGroups, isAsc, seachValue]);
@@ -147,10 +160,10 @@ export const DetailItem: FC = () => {
           />
         </div>
 
-        <div className="container mx-auto my-12 h-32 w-max overflow-hidden rounded-[3rem] bg-ct-bg-600 transition-all hover:h-[46rem]">
+        <div className="container mx-auto my-12 h-[30rem] w-max overflow-hidden rounded-[3rem] bg-ct-bg-600 transition-all hover:h-[54rem]">
           <div className="m-2 p-4 text-center text-[3rem] font-bold">Amount: {scores.length}</div>
           <form
-            className="flexcentercol w-full p-8 text-center text-[5rem] font-bold line-clamp-1"
+            className="flexcentercol w-full p-8 pt-0 text-center text-[5rem] font-bold line-clamp-1"
             onSubmit={handleSubmit(onSubmit)}
           >
             <Input
@@ -201,6 +214,13 @@ export const DetailItem: FC = () => {
               <ErrorMessage className="text-[3rem]" content={errors.type.message || ''} />
             )}
 
+            <TextArea
+              className="h-48 resize-none border-r-sky-200 border-l-sky-200"
+              placeholder="Answer"
+              value={answer}
+              onChange={(e: any) => setAnswer(e?.currentTarget?.value || '')}
+            />
+
             <Button className="text-[3rem]" type="submit">
               Edit
             </Button>
@@ -210,7 +230,7 @@ export const DetailItem: FC = () => {
         <SearchBar onChange={(e) => setSearchValue(e.currentTarget.value.trim().toLowerCase())} />
       </div>
 
-      <div className="flexcentercol container mx-auto h-[50vh] min-h-[50rem] !justify-start gap-6 overflow-y-auto overflow-x-hidden">
+      <div className="flexcentercol container mx-auto min-h-[50rem] !justify-start gap-6 overflow-y-auto overflow-x-hidden">
         <div className="flexcenter sticky top-0 left-0 mt-6 w-full max-w-[80%] select-none flex-wrap !justify-between bg-ct-bg-700 px-2 transition-all">
           <div className="m-2 w-[70%] p-4 text-left text-[2.5rem] font-bold line-clamp-1">Name</div>
           <div className="flexcenter w-[26%] flex-wrap">

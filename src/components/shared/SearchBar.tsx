@@ -35,8 +35,8 @@ export const SearchBar: FC<SearchBarProps & InputProps> = ({ onChange }) => {
           disabled={!isActive}
           onChange={onChange}
           onBlur={(e) => {
-            e.currentTarget.value = '';
-            setActive(false);
+            const val = e.currentTarget.value;
+            !val.length && setActive(false);
           }}
         />
         <button

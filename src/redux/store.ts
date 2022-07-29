@@ -3,6 +3,8 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist
 import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
 import storage from 'redux-persist/lib/storage';
+import imgSourcesReducer from './imgSourcesSlice';
+import judgeSourcesReducer from './judgeSourcesSlice';
 import scoreGroupsReducer from './scoreGroupsSlice';
 
 const persistConfig = {
@@ -12,7 +14,14 @@ const persistConfig = {
 };
 
 export const store = configureStore({
-  reducer: persistReducer(persistConfig, combineReducers({ scoreGroups: scoreGroupsReducer })),
+  reducer: persistReducer(
+    persistConfig,
+    combineReducers({
+      imgSources: imgSourcesReducer,
+      scoreGroups: scoreGroupsReducer,
+      // judgeSources: judgeSourcesReducer,
+    })
+  ),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

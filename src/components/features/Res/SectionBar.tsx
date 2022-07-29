@@ -1,8 +1,8 @@
 import { setFilter } from '@/redux/scoreGroupsSlice';
 import { PlusIcon } from '@cpns/icons';
-import { Label, SearchBar } from '@cpns/shared';
+import { Label } from '@cpns/shared';
 import { RootState } from '@shared/types';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassRecordAddNew } from './ClassRecordAddNew';
 
@@ -60,7 +60,6 @@ export const SectionBar = () => {
           onClick={() => setAddNew((s) => !s)}
         />
       </div>
-      {/* <SearchBar /> */}
 
       {addNew && <ClassRecordAddNew onClickHandle={setAddNew} />}
     </div>

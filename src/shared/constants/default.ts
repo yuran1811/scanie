@@ -1,4 +1,4 @@
-import { ScoreGroupsState } from '@shared/types';
+import { JudgeSourcesState, ScoreGroupsState } from '@shared/types';
 import { ToastOptions } from 'react-toastify';
 
 export const defaultScoresStore: ScoreGroupsState = {
@@ -15,9 +15,22 @@ export const defaultScoresStore: ScoreGroupsState = {
   sortAmount: 'asc',
 };
 
+export const defaultJudgeSourcesStore: JudgeSourcesState = {
+  judgeSourceGroups: [],
+  searchOpts: {
+    value: '',
+    isSearch: false,
+  },
+  filter: {
+    class: false,
+    subject: false,
+    type: false,
+  },
+};
+
 export const ToastDefaultConfig: ToastOptions = {
   className: 'text-[2.5rem] text-center',
-  autoClose: 1500,
+  autoClose: 1000,
   closeOnClick: true,
   draggable: true,
   pauseOnHover: true,
