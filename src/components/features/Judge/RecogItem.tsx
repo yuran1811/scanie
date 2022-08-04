@@ -9,9 +9,10 @@ import { RecogResult } from './RecogResult';
 
 interface RecogItemProps {
   data: ImgSourcesProps;
+  isRecog?: boolean;
 }
 
-export const RecogItem: FC<RecogItemProps> = ({ data: recogData }) => {
+export const RecogItem: FC<RecogItemProps> = ({ data: recogData, isRecog }) => {
   const [recogResult, setRecogResult] = useState<{ result: RecogResultType }>({
     result: recogData.recogResult || [],
   });
@@ -43,7 +44,7 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData }) => {
         setProgress((s) => ({ ...s, value: m.progress, status: m.status }));
       });
       if (!data) return;
-      console.log('data: ', data);
+      // console.log('data: ', data);
 
       setRecogResult({
         result: data.lines.map((line) => ({ text: line.text })),
@@ -60,6 +61,11 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData }) => {
       setConvert(true);
     }
   };
+
+  useEffect(() => {
+    if (typeof isRecog === 'undefined') return;
+    if (isRecog) handleClick();
+  }, [isRecog]);
 
   useEffect(() => {
     if (!canvasRef || !canvasRef.current || !imageRef || !imageRef.current) return;
@@ -122,7 +128,7 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData }) => {
         )}
 
         {!!recogData.url && (
-          <div className="flexcentercol absolute -bottom-[32rem] left-0 z-20 !hidden max-w-[40rem] !justify-start gap-4 p-4 group-hover:!flex">
+          <div className="flexcentercol absolute top-full left-0 z-20 !hidden max-w-[40rem] !justify-start gap-4 p-4 group-hover:!flex">
             <img className="w-full" src={recogData.url} />
 
             <div className="!hidden">

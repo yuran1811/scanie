@@ -3,7 +3,7 @@ import { averageScore, getChosenStatus, standardize, standardizeAnswer } from '@
 import { TrashIcon } from '@cpns/icons';
 import { Button, Input, ModalUI } from '@cpns/shared';
 import { ScoreDetailProps, ScoreGroupsType } from '@shared/types';
-import { FC, FormEvent, useState } from 'react';
+import { FC, FormEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TesseractResult from '../Judge/TesseractResult';
 
@@ -11,6 +11,7 @@ interface ItemCardProps {
   data: ScoreDetailProps;
   groups: ScoreGroupsType;
   groupId: string;
+  isRecog?: boolean;
 }
 
 const style = {
@@ -24,7 +25,7 @@ const style = {
     'bg-danger-bg text-danger-color border-danger-color hover:bg-danger-color hover:text-danger-bg hover:border-danger-bg',
 };
 
-export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups }) => {
+export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups, isRecog }) => {
   const [showMore, setShowMore] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
@@ -69,6 +70,11 @@ export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups }) => 
 
     dispatch(updateScoreInGroup({ groupId, id: data.id, data: { judgeResult } }));
   };
+
+  useEffect(() => {
+    if (typeof isRecog === 'undefined') return;
+    if (isRecog) judgeHandle();
+  }, [isRecog]);
 
   return (
     <div

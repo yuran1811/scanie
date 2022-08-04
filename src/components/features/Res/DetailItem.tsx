@@ -1,4 +1,4 @@
-import { addScoreToGroup, deleteScoreGroup, updateScoreGroup } from '@/redux/scoreGroupsSlice';
+import { deleteScoreGroup, updateScoreGroup } from '@/redux/scoreGroupsSlice';
 import { ToastDefaultConfig } from '@/shared';
 import { copyToClipboard } from '@/utils';
 import {
@@ -32,6 +32,7 @@ export const DetailItem: FC = () => {
   const [answer, setAnswer] = useState('');
   const [seachValue, setSearchValue] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [isJudgeAll, setJudgeAll] = useState(false);
 
   const thisItem = useRef<HTMLDivElement>(null);
 
@@ -89,6 +90,9 @@ export const DetailItem: FC = () => {
       });
     }
   };
+  const judgeAllHandle = () => {
+    setJudgeAll(true);
+  };
 
   const { scores, group } = useMemo<{ scores: ScoreDetailsType; group: ScoreGroupProps }>(() => {
     const data = scoreGroups.find((item) => item.id + '' === resultId);
@@ -108,6 +112,10 @@ export const DetailItem: FC = () => {
       group: data,
     };
   }, [resultId, scoreGroups, isAsc, seachValue]);
+
+  useEffect(() => {
+    setJudgeAll(false);
+  }, [answer]);
 
   useEffect(() => {
     thisItem.current?.scrollIntoView({
@@ -221,9 +229,22 @@ export const DetailItem: FC = () => {
               onChange={(e: any) => setAnswer(e?.currentTarget?.value || '')}
             />
 
-            <Button className="text-[3rem]" type="submit">
-              Edit
-            </Button>
+            <div className="flexcenter">
+              <Button className="text-[3rem]" type="submit">
+                Edit
+              </Button>
+
+              {!isJudgeAll && (
+                <Button
+                  className="text-[3rem]"
+                  onClick={() => {
+                    judgeAllHandle();
+                  }}
+                >
+                  Judge All
+                </Button>
+              )}
+            </div>
           </form>
         </div>
 
@@ -244,6 +265,7 @@ export const DetailItem: FC = () => {
             data={score}
             groupId={resultId || ''}
             groups={scoreGroups}
+            isRecog={isJudgeAll}
           />
         ))}
       </div>
