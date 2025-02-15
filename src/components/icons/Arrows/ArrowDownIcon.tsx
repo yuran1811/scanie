@@ -1,10 +1,10 @@
-import { FC, SVGProps } from 'react';
+import { SVGProps } from "react";
 
-export const ArrowDownIcon: FC<SVGProps<SVGSVGElement>> = ({ fill, ...props }) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+export const ArrowDownIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
     <path
-      fill={fill || 'currentColor'}
-      d="M192 384c-8.188 0-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L192 306.8l137.4-137.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-160 160C208.4 380.9 200.2 384 192 384z"
-    />
+      fill="currentColor"
+      d="M12 14.975q-.2 0-.375-.062T11.3 14.7l-4.6-4.6q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l3.9 3.9l3.9-3.9q.275-.275.7-.275t.7.275t.275.7t-.275.7l-4.6 4.6q-.15.15-.325.213t-.375.062"
+    ></path>
   </svg>
 );

@@ -1,17 +1,24 @@
-import { DivProps } from '@shared/types';
-import { FC } from 'react';
+import { FC, PropsWithChildren } from "react";
 
-const beforeStyle = `before:content-[""] before:absolute before:left-6 before:right-[unset] before:w-1/2 before:h-[0.8rem] before:rounded-[1rem] before:bg-current before:rotate-[-45deg] before:top-[1.7rem] before:left-[-1rem]`;
-const afterStyle = `after:content-[""] after:absolute after:left-6 after:right-[unset] after:w-1/2 after:h-[0.8rem] after:rounded-[1rem] after:bg-current after:rotate-45 after:bottom-[1.7rem] after:left-[-1rem]`;
-const hoverStyle = `cursor-pointer hover:translate-x-[-0.5rem] transition-all`;
+import { ButtonProps } from "@shared/types";
 
-export const BackIcon: FC<DivProps> = ({ className, onClick }) => (
-  <div
-    className={`${
-      className || ''
-    } flexcenter relative my-[0.6rem] mx-auto h-[5.6rem] w-[5.6rem] !justify-start text-ct-bg-800 ${beforeStyle} ${afterStyle} ${hoverStyle}`}
+export const BackIcon: FC<ButtonProps & PropsWithChildren> = ({ children, className, onClick }) => (
+  <button
+    className={`${className || ""} flexcenter text-ct-bg-800 group cursor-pointer rounded-md bg-violet-400 px-5 py-2 font-semibold`}
     onClick={onClick}
   >
-    <span className="h-[0.8rem] w-full rounded-[1rem] bg-current" />
-  </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      className="-translate-x-2 transition-all group-hover:-translate-x-3"
+    >
+      <path
+        fill="currentColor"
+        d="M20 11H6.83l2.88-2.88A.996.996 0 1 0 8.3 6.71L3.71 11.3a.996.996 0 0 0 0 1.41L8.3 17.3a.996.996 0 1 0 1.41-1.41L6.83 13H20c.55 0 1-.45 1-1s-.45-1-1-1"
+      />
+    </svg>
+    {children}
+  </button>
 );

@@ -1,10 +1,10 @@
-import React, { FC, SVGProps } from 'react';
+import { SVGProps } from "react";
 
-export const CopyIcon: FC<SVGProps<SVGSVGElement & HTMLDivElement>> = ({ fill, ...props }) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+export const CopyIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
     <path
-      fill={fill || 'currentColor'}
-      d="M0 224C0 188.7 28.65 160 64 160H128V288C128 341 170.1 384 224 384H352V448C352 483.3 323.3 512 288 512H64C28.65 512 0 483.3 0 448V224zM224 352C188.7 352 160 323.3 160 288V64C160 28.65 188.7 0 224 0H448C483.3 0 512 28.65 512 64V288C512 323.3 483.3 352 448 352H224z"
+      fill="currentColor"
+      d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm-4 4q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6t.713.288T5 7v13h10q.425 0 .713.288T16 21t-.288.713T15 22z"
     />
   </svg>
 );

@@ -1,10 +1,10 @@
-import { FC, SVGProps } from 'react';
+import { SVGProps } from "react";
 
-export const ArrowLeftIcon: FC<SVGProps<SVGSVGElement>> = ({ fill, ...props }) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+export const ArrowLeftIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
     <path
-      fill={fill || 'currentColor'}
-      d="M192 448c-8.188 0-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l137.4 137.4c12.5 12.5 12.5 32.75 0 45.25C208.4 444.9 200.2 448 192 448z"
-    />
+      fill="currentColor"
+      d="m10.8 12l3.9 3.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-4.6-4.6q-.15-.15-.212-.325T8.425 12t.063-.375t.212-.325l4.6-4.6q.275-.275.7-.275t.7.275t.275.7t-.275.7z"
+    ></path>
   </svg>
 );

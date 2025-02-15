@@ -1,6 +1,7 @@
-import { FC, SVGProps } from 'react';
-import { NotUseFilterIcon } from './NotUseFilter';
-import { UseFilterIcon } from './UseFilterIcon';
+import { FC, SVGProps } from "react";
+
+import { NotUseFilterIcon } from "./NotUseFilter";
+import { UseFilterIcon } from "./UseFilterIcon";
 
 interface FilterIconProps {
   isUsed: boolean;
