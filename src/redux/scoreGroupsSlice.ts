@@ -1,14 +1,15 @@
-import { defaultScoresStore, fakeData, ScoreDetailProps, ScoreGroupsState } from '@/shared';
-import { createSlice } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
+import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+
+import { defaultScoresStore, fakeData, ScoreDetailProps, ScoreGroupsState } from "@/shared";
 
 const { actions, reducer } = createSlice({
-  name: 'scoreGroupsState',
+  name: "scoreGroupsState",
 
   initialState: {
     scoreGroups: [...fakeData],
     searchOpts: {
-      value: '',
+      value: "",
       isSearch: false,
     },
     filter: {
@@ -16,12 +17,16 @@ const { actions, reducer } = createSlice({
       subject: false,
       type: false,
     },
-    sortAmount: 'asc',
+    sortAmount: "asc",
   } as ScoreGroupsState,
 
   reducers: {
     resetState: (state) => {
       Object.assign(state, defaultScoresStore);
+    },
+
+    importScoreGroups: (state, { payload }) => {
+      state.scoreGroups = payload;
     },
 
     addScoreGroup: (state, { payload }) => {
@@ -32,7 +37,7 @@ const { actions, reducer } = createSlice({
       idx !== -1 &&
         (state.scoreGroups[idx] = Object.assign(
           {},
-          { ...state.scoreGroups[idx], ...payload.data }
+          { ...state.scoreGroups[idx], ...payload.data },
         ));
     },
     deleteScoreGroup: (state, { payload }) => {
@@ -42,7 +47,7 @@ const { actions, reducer } = createSlice({
 
     addScoreToGroup: (
       state,
-      { payload }: { payload: Omit<ScoreDetailProps, 'id' | 'answerId'> & { groupId: string } }
+      { payload }: { payload: Omit<ScoreDetailProps, "id" | "answerId"> & { groupId: string } },
     ) => {
       const idx = state.scoreGroups.findIndex((score) => score.id === payload.groupId);
       if (idx === -1) return;
@@ -52,7 +57,7 @@ const { actions, reducer } = createSlice({
         name: payload.name,
         judgeResult: payload.judgeResult,
         recogResult: payload.recogResult,
-        answerId: '',
+        answerId: "",
       });
     },
     updateScoreInGroup: (state, { payload }) => {
@@ -64,7 +69,7 @@ const { actions, reducer } = createSlice({
 
       state.scoreGroups[idx].scores[thisIdx] = Object.assign(
         {},
-        { ...state.scoreGroups[idx].scores[thisIdx], ...payload.data }
+        { ...state.scoreGroups[idx].scores[thisIdx], ...payload.data },
       );
     },
     deleteScoreFromGroup: (state, { payload }) => {
@@ -85,6 +90,8 @@ const { actions, reducer } = createSlice({
 
 export const {
   resetState,
+
+  importScoreGroups,
 
   addScoreGroup,
   updateScoreGroup,

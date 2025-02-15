@@ -1,12 +1,10 @@
-import { HighlightLink } from '@cpns/interfaces';
-import { GH_LINK } from '@shared/constants';
-import { FC } from 'react';
+import { FC } from "react";
+
+import { HighlightLink } from "@cpns/interfaces";
+import { GH_LINK } from "@shared/constants";
 
 export const Footer: FC = () => (
-  <footer className="relative w-full px-[1rem] pt-[0.7rem] pb-[2rem] text-center text-[3rem]">
-    Made by{' '}
-    <HighlightLink className="text-[3rem]" url={GH_LINK}>
-      yuran1811
-    </HighlightLink>
+  <footer className="relative w-full py-8 text-center text-xl">
+    Made by <HighlightLink url={GH_LINK}>yuran1811</HighlightLink>
   </footer>
 );

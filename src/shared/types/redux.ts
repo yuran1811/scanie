@@ -1,7 +1,8 @@
-import { Line } from 'tesseract.js';
-import { ChosenStatusType } from './recognition';
+import { Line } from "tesseract.js";
 
-export type RecogResultType = Pick<Line, 'text'>[];
+import { ChosenStatusType } from "./recognition";
+
+export type RecogResultType = Pick<Line, "text">[];
 
 export interface ScoreGroupProps {
   id: string;
@@ -42,7 +43,7 @@ export interface ScoreGroupsState {
     type: boolean;
     [key: string]: boolean;
   };
-  sortAmount: 'desc' | 'asc';
+  sortAmount: "desc" | "asc";
 }
 
 // <-- === . === --->

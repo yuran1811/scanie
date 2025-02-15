@@ -1,10 +1,11 @@
-import { JudgeSourcesState, ScoreGroupsState } from '@shared/types';
-import { ToastOptions } from 'react-toastify';
+import { ToastOptions } from "react-toastify";
+
+import { JudgeSourcesState, ScoreGroupsState } from "@shared/types";
 
 export const defaultScoresStore: ScoreGroupsState = {
   scoreGroups: [],
   searchOpts: {
-    value: '',
+    value: "",
     isSearch: false,
   },
   filter: {
@@ -12,13 +13,13 @@ export const defaultScoresStore: ScoreGroupsState = {
     subject: false,
     type: false,
   },
-  sortAmount: 'asc',
+  sortAmount: "asc",
 };
 
 export const defaultJudgeSourcesStore: JudgeSourcesState = {
   judgeSourceGroups: [],
   searchOpts: {
-    value: '',
+    value: "",
     isSearch: false,
   },
   filter: {
@@ -29,12 +30,12 @@ export const defaultJudgeSourcesStore: JudgeSourcesState = {
 };
 
 export const ToastDefaultConfig: ToastOptions = {
-  className: 'text-[2.5rem] text-center',
-  autoClose: 1000,
+  className: "text-2xl text-center px-4",
+  autoClose: 1200,
   closeOnClick: true,
   draggable: true,
   pauseOnHover: true,
-  position: 'bottom-center',
+  position: "bottom-center",
   progress: undefined,
   hideProgressBar: false,
 };

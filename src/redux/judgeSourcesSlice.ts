@@ -1,14 +1,15 @@
-import { defaultJudgeSourcesStore, JudgeSourcesState } from '@/shared';
-import { createSlice } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
+import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+
+import { defaultJudgeSourcesStore, JudgeSourcesState } from "@/shared";
 
 const { actions, reducer } = createSlice({
-  name: 'judgeSourcesState',
+  name: "judgeSourcesState",
 
   initialState: {
     judgeSourceGroups: [],
     searchOpts: {
-      value: '',
+      value: "",
       isSearch: false,
     },
     filter: {

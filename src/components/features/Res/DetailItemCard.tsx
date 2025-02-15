@@ -1,11 +1,12 @@
-import { deleteScoreFromGroup, updateScoreInGroup } from '@/redux/scoreGroupsSlice';
-import { averageScore, getChosenStatus, standardize, standardizeAnswer } from '@/utils';
-import { TrashIcon } from '@cpns/icons';
-import { Button, Input, ModalUI } from '@cpns/shared';
-import { ScoreDetailProps, ScoreGroupsType } from '@shared/types';
-import { FC, FormEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import TesseractResult from '../Judge/TesseractResult';
+import { FC, FormEvent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { deleteScoreFromGroup, updateScoreInGroup } from "@/redux/scoreGroupsSlice";
+import { averageScore, getChosenStatus, standardize, standardizeAnswer } from "@/utils";
+import { TrashIcon } from "@cpns/icons";
+import { Button, Input, ModalUI } from "@cpns/shared";
+import { ScoreDetailProps, ScoreGroupsType } from "@shared/types";
+import TesseractResult from "../Judge/TesseractResult";
 
 interface ItemCardProps {
   data: ScoreDetailProps;
@@ -15,14 +16,14 @@ interface ItemCardProps {
 }
 
 const style = {
-  good: 'bg-good-bg text-good-color border-good-color hover:bg-good-color hover:text-good-bg hover:border-good-bg',
-  need: 'bg-need-bg text-need-color border-need-color hover:bg-need-color hover:text-need-bg hover:border-need-bg',
+  good: "bg-good-bg text-good-color border-good-color hover:bg-good-color hover:text-good-bg hover:border-good-bg",
+  need: "bg-need-bg text-need-color border-need-color hover:bg-need-color hover:text-need-bg hover:border-need-bg",
   normal:
-    'bg-normal-bg text-normal-color border-normal-color hover:bg-normal-color hover:text-normal-bg hover:border-normal-bg',
+    "bg-normal-bg text-normal-color border-normal-color hover:bg-normal-color hover:text-normal-bg hover:border-normal-bg",
   caution:
-    'bg-caution-bg text-caution-color border-caution-color hover:bg-caution-color hover:text-caution-bg hover:border-caution-bg',
+    "bg-caution-bg text-caution-color border-caution-color hover:bg-caution-color hover:text-caution-bg hover:border-caution-bg",
   danger:
-    'bg-danger-bg text-danger-color border-danger-color hover:bg-danger-color hover:text-danger-bg hover:border-danger-bg',
+    "bg-danger-bg text-danger-color border-danger-color hover:bg-danger-color hover:text-danger-bg hover:border-danger-bg",
 };
 
 export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups, isRecog }) => {
@@ -41,19 +42,19 @@ export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups, isRec
         data: {
           name: e.currentTarget.value,
         },
-      })
+      }),
     );
   };
-  const deleteHandle = (e: any, type: string = 'delete') => {
+  const deleteHandle = (e: any, type: string = "delete") => {
     e.stopPropagation();
     if (!groupId) return;
 
-    if (!deleteConfirm && type === 'open') {
+    if (!deleteConfirm && type === "open") {
       setDeleteConfirm(true);
       return;
     }
 
-    if (type === 'delete') {
+    if (type === "delete") {
       setDeleteConfirm(false);
       dispatch(deleteScoreFromGroup({ groupId, id: data.id }));
     }
@@ -64,61 +65,58 @@ export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups, isRec
 
     if (!data.recogResult.length) return;
 
-    const { chosen, rawChosen } = standardize(data.recogResult);
+    const { chosen } = standardize(data.recogResult);
     const { answerData, answerLength } = standardizeAnswer(thisGroup.rawAnswer);
     const judgeResult = getChosenStatus(chosen, answerData, answerLength);
+
+    console.log("🚀 ~ judgeHandle ~ chosen:", chosen);
+    console.log("🚀 ~ judgeHandle ~ answerData:", answerData);
 
     dispatch(updateScoreInGroup({ groupId, id: data.id, data: { judgeResult } }));
   };
 
   useEffect(() => {
-    if (typeof isRecog === 'undefined') return;
+    if (typeof isRecog === "undefined") return;
     if (isRecog) judgeHandle();
   }, [isRecog]);
 
   return (
     <div
-      className={`flexcenter scrollY mt-8 w-full max-w-[80%] cursor-pointer select-none flex-wrap !justify-between rounded-[2rem] border-4 transition-all ${style[theme]}`}
+      className={`flexcenter scrollY w-full cursor-pointer flex-wrap justify-between border-2 transition-all select-none ${style[theme]}`}
       onClick={() => setShowMore((s) => !s)}
       onMouseLeave={() => setShowMore(false)}
     >
-      <div className="m-2 w-1/2 px-6 py-4 text-left text-[2.5rem] font-bold line-clamp-2 md:w-[70%]">
-        <Input
-          className="max-w-full bg-transparent text-current"
-          value={data.name}
-          disabled={!showMore}
-          onChange={(e) => editNameHandle(e)}
-          onClick={(e) => e.stopPropagation()}
-        />
-      </div>
-      <div className="flexcenter flex-1 flex-wrap !justify-end px-6">
-        <div className="m-2 p-4 text-center text-[2.5rem] font-bold line-clamp-1">
+      <Input
+        className={`${showMore ? "pointer-events-auto" : "pointer-events-none"} w-3/5 flex-3 !rounded-none bg-transparent font-bold`}
+        value={data.name}
+        disabled={!showMore}
+        onChange={(e) => editNameHandle(e)}
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      <div className="flexcenter pointer-events-none flex-1 flex-wrap justify-end gap-3 px-3">
+        <div className="line-clamp-1 text-center font-bold">
           {+(data.judgeResult?.score || 0).toFixed(2)}
         </div>
+
         <TrashIcon
-          className="cursor-pointer"
-          fill="#f87171"
-          width="30"
-          height="30"
-          onClick={(e) => deleteHandle(e, 'open')}
+          className="!pointer-events-auto cursor-pointer text-red-300"
+          onClick={(e) => deleteHandle(e, "open")}
         />
       </div>
 
       <div
         className={`h-0 w-full overflow-hidden bg-gray-900 text-gray-100 transition-all ${
-          showMore ? 'h-[40rem] md:h-[22rem]' : ''
+          showMore ? "h-max py-2" : ""
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flexcentercol mx-auto w-full max-w-[45rem] origin-top p-6 md:flex-row">
-          <div className="flexcentercol w-1/2">
-            <Input className="max-w-[10rem]" disabled={!showMore} />
-            <Button onClick={() => judgeHandle()}>Judge</Button>
-          </div>
-          <div className="flex-1">
-            <TesseractResult data={data} />
-          </div>
+        <div className="flexcentercol mx-auto w-1/2 max-w-100 gap-3 md:flex-row">
+          {/* <Input className="max-w-[10rem]" disabled={!showMore} /> */}
+          <Button onClick={() => judgeHandle()}>Judge</Button>
         </div>
+
+        <TesseractResult data={data} />
       </div>
 
       {deleteConfirm && (
@@ -127,8 +125,8 @@ export const DetailItemCard: FC<ItemCardProps> = ({ data, groupId, groups, isRec
           onClick={(e) => deleteHandle(e)}
           cancelHandle={() => setDeleteConfirm(false)}
         >
-          <div className="flexcentercol mt-6">
-            <p className="text-gray-400">Delete the score ?</p>
+          <div className="flexcentercol">
+            <p>Delete the score ?</p>
           </div>
         </ModalUI>
       )}

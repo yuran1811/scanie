@@ -1,11 +1,12 @@
-import { deleteImgSource, updateImgSource } from '@/redux/imgSourcesSlice';
-import { preprocessImage, recognize } from '@/utils';
-import { ErrorMessage } from '@cpns/interfaces';
-import { Button, ProgressBar } from '@cpns/shared';
-import { ImgSourcesProps, RecogResultType } from '@shared/types';
-import { FC, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { RecogResult } from './RecogResult';
+import { FC, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { deleteImgSource, updateImgSource } from "@/redux/imgSourcesSlice";
+import { preprocessImage, recognize } from "@/utils";
+import { ErrorMessage } from "@cpns/interfaces";
+import { Button, ProgressBar } from "@cpns/shared";
+import { ImgSourcesProps, RecogResultType } from "@shared/types";
+import { RecogResult } from "./RecogResult";
 
 interface RecogItemProps {
   data: ImgSourcesProps;
@@ -19,10 +20,10 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData, isRecog }) => {
   const [isConvert, setConvert] = useState(true);
   const [progress, setProgress] = useState({
     value: 0,
-    status: '',
+    status: "",
     error: {
       isError: false,
-      errorMessage: '',
+      errorMessage: "",
     },
   });
 
@@ -38,24 +39,24 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData, isRecog }) => {
       setRecogResult({ result: [] });
       setConvert(false);
 
-      const dataURI = canvasRef.current.toDataURL('image/jpeg');
+      const dataURI = canvasRef.current.toDataURL("image/jpeg");
 
       const data = await recognize(dataURI, (m: any) => {
         setProgress((s) => ({ ...s, value: m.progress, status: m.status }));
       });
       if (!data) return;
-      // console.log('data: ', data);
+      console.log("recognized data: ", data.text);
 
       setRecogResult({
-        result: data.lines.map((line) => ({ text: line.text })),
+        result: data.blocks?.map((line) => ({ text: line.text })) || [],
       });
     } catch (error) {
-      console.log(error + '');
+      console.log(error + "");
 
       setProgress({
         value: 0,
-        status: '',
-        error: { isError: true, errorMessage: error + '' },
+        status: "",
+        error: { isError: true, errorMessage: error + "" },
       });
     } finally {
       setConvert(true);
@@ -63,7 +64,7 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData, isRecog }) => {
   };
 
   useEffect(() => {
-    if (typeof isRecog === 'undefined') return;
+    if (typeof isRecog === "undefined") return;
     if (isRecog) handleClick();
   }, [isRecog]);
 
@@ -73,7 +74,7 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData, isRecog }) => {
     canvasRef.current.width = 500;
     canvasRef.current.height = 375;
 
-    const ctx = canvasRef.current.getContext('2d');
+    const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
 
     const img = new Image(canvasRef.current.width, canvasRef.current.height);
@@ -83,7 +84,7 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData, isRecog }) => {
 
       imageRef.current?.style &&
         Object.assign(imageRef.current.style, {
-          display: 'none',
+          display: "none",
         });
     };
     img.onload = () => {
@@ -106,38 +107,33 @@ export const RecogItem: FC<RecogItemProps> = ({ data: recogData, isRecog }) => {
   }, [recogResult]);
 
   return (
-    <div className="group min-h-[13rem] w-full max-w-[35rem] rounded-[2.6rem] border-4 border-sky-200 border-t-transparent transition-all">
-      <div className="relative flex w-full flex-col items-center justify-start">
-        {isConvert && !recogData.recogResult.length && (
-          <Button
-            className="m-6 rounded-[1rem] p-6 text-[3rem] font-semibold"
-            onClick={handleClick}
-          >
-            Recognize
-          </Button>
-        )}
+    <div className="group flexcentercol relative container mx-auto max-w-120 justify-start rounded-xl border-2 border-sky-200 border-t-transparent p-4 transition-all hover:bg-sky-800">
+      {isConvert && !recogData.recogResult.length && (
+        <Button className="font-semibold" onClick={handleClick}>
+          Recognize
+        </Button>
+      )}
 
-        {!!progress.status && !progress.error.isError && !recogResult.result.length && (
-          <ProgressBar value={progress.value} status={progress.status} />
-        )}
+      {!!progress.status && !progress.error.isError && !recogResult.result.length && (
+        <ProgressBar value={progress.value} status={progress.status} />
+      )}
 
-        {progress.error.isError && <ErrorMessage content={progress.error.errorMessage} />}
+      {progress.error.isError && <ErrorMessage content={progress.error.errorMessage} />}
 
-        {!!recogResult.result.length && (
-          <RecogResult recogId={recogData.id} recogResult={recogResult.result} />
-        )}
+      {!!recogResult.result.length && (
+        <RecogResult recogId={recogData.id} recogResult={recogResult.result} />
+      )}
 
-        {!!recogData.url && (
-          <div className="flexcentercol absolute top-full left-0 z-20 !hidden max-w-[40rem] !justify-start gap-4 p-4 group-hover:!flex">
-            <img className="w-full" src={recogData.url} />
+      {!!recogData.url && (
+        <div className="flexcentercol z-20 mt-2 h-0 max-w-[40rem] transition-all **:w-full group-hover:h-auto">
+          <img className="h-full" src={recogData.url} />
 
-            <div className="!hidden">
-              <img ref={imageRef} className="w-full" src={recogData.url} />
-              <canvas ref={canvasRef} />
-            </div>
+          <div className="hidden">
+            <img ref={imageRef} src={recogData.url} />
+            <canvas ref={canvasRef} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

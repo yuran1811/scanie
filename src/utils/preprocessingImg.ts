@@ -6,10 +6,12 @@ let blurRadius: any;
 export const preprocessImage = (
   canvas: HTMLCanvasElement,
   level: number = 0.65,
-  invert: boolean = false
+  invert: boolean = false,
 ) => {
   const processedImageData = canvas
-    ?.getContext('2d')
+    ?.getContext("2d", {
+      willReadFrequently: true,
+    })
     ?.getImageData(0, 0, canvas.width, canvas.height);
   if (!processedImageData) return null;
 

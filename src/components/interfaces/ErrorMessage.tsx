@@ -1,5 +1,6 @@
-import { DivProps } from '@shared/types';
-import { FC } from 'react';
+import { FC } from "react";
+
+import { DivProps } from "@shared/types";
 
 interface ErrorMessageProps {
   extraStyle?: string;
@@ -8,8 +9,8 @@ interface ErrorMessageProps {
 
 export const ErrorMessage: FC<ErrorMessageProps & DivProps> = ({ content, extraStyle }) => (
   <div
-    className={`rounded-[2rem] bg-rose-600 px-6 py-4 text-center font-semibold text-rose-200 ${
-      extraStyle || ''
+    className={`rounded-xl bg-red-500/90 px-4 py-2 text-center font-semibold text-red-200 ${
+      extraStyle || ""
     }`}
   >
     {content}

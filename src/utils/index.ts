@@ -1,14 +1,16 @@
-export * from './dayjsUsage';
-export * from './judge';
-export * from './preprocessingImg';
-export * from './styles';
+import { ScoreGroupsType } from "@shared/types";
+
+export * from "./dayjsUsage";
+export * from "./judge";
+export * from "./preprocessingImg";
+export * from "./styles";
 
 interface CmpObject extends Object {
   [key: string]: any;
 }
 
 const isObject = (object: Object) => {
-  return object != null && typeof object === 'object';
+  return object != null && typeof object === "object";
 };
 
 export const deepObjectCompare = (a: CmpObject, b: CmpObject) => {
@@ -42,4 +44,15 @@ export const shallowObjectCompare = (a: CmpObject, b: CmpObject) => {
 
 export const copyToClipboard = (data: string) => {
   navigator.clipboard.writeText(data);
+};
+
+export const exportScoreGroups = (scoreGroups: ScoreGroupsType) => {
+  const data = JSON.stringify(scoreGroups, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "scoreGroups.json";
+  a.click();
 };

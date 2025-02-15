@@ -1,8 +1,9 @@
-import { HomePage } from '@/pages';
-import { publicRoutes } from '@/routes';
-import MainLayout from '@cpns/layouts/MainLayout';
-import { ErrorContent } from '@cpns/shared';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Outlet, Route, Routes } from "react-router-dom";
+
+import { HomePage } from "@/pages";
+import { publicRoutes } from "@/routes";
+import MainLayout from "@cpns/layouts/MainLayout";
+import { ErrorContent } from "@cpns/shared";
 
 const App = () => (
   <MainLayout>

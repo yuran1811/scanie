@@ -1,24 +1,32 @@
-import { ChosenStatusType, RecogResultType, ScoreGroupsType } from '@/shared';
-import Tesseract, { Line } from 'tesseract.js';
+import { createWorker, OEM } from "tesseract.js";
+
+import { ChosenStatusType, RecogResultType, ScoreGroupsType } from "@/shared";
 
 export const recognize = async (img: string, callback: CallableFunction) => {
   try {
-    const { data } = await Tesseract.recognize(img, 'eng', {
-      logger: (m) => {
-        callback(m);
-      },
+    const worker = await createWorker("eng", OEM.TESSERACT_LSTM_COMBINED, {
+      legacyCore: false,
+      logger: (m) => callback(m),
     });
+    await worker.setParameters({
+      tessedit_char_whitelist:
+        "0123456789" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz" + "@:=. ",
+    });
+
+    const { data } = await worker.recognize(img, {}, { blocks: true });
+
+    await worker.terminate();
 
     return data;
   } catch (error) {
-    throw new Error(error + '');
+    throw new Error(error + "");
   }
 };
 
 export const getChosenStatus = (
   chosen: { [key: string]: string } = {},
   answer: { [key: string]: string } = {},
-  length: number
+  length: number,
 ) => {
   const chosenStatus = {
     notRecognize: 0,
@@ -28,7 +36,11 @@ export const getChosenStatus = (
   } as ChosenStatusType;
 
   Object.keys(answer).forEach((answerKey) => {
-    if (!chosen[answerKey] || /[^ABCD]/gi.test(chosen[answerKey]) || !answer[answerKey]) {
+    if (
+      !chosen[answerKey] ||
+      /[^abcd]/gi.test(chosen[answerKey].toLowerCase()) ||
+      !answer[answerKey]
+    ) {
       chosenStatus.notRecognize++;
       return;
     }
@@ -38,36 +50,30 @@ export const getChosenStatus = (
     }
   });
 
-  chosenStatus.score = (chosenStatus.correct * 10) / length;
+  chosenStatus.score = 10 * (chosenStatus.correct / length);
 
-  console.log(chosen, answer);
+  console.log("chosen and answer", chosen, answer);
 
   return chosenStatus;
 };
 
 export const standardize = (lines: RecogResultType) => {
-  const questions = lines.map((_) =>
-    _.text
-      .trim()
-      .replace(/[\n\t]/g, '')
-      .split('+')
-  );
+  const questions = lines
+    .map((_) =>
+      _.text.trim().replace(/[\t]/g, "").replace(/\s\s+/g, " ").replace(/\n\n+/g, "\n").split("\n"),
+    )[0]
+    .slice(1);
 
   const scores: { [key: string]: string } = {};
 
   questions.map((question) => {
-    question.forEach((item) => {
-      const pattern = item.replace(/[^A-Za-z\d]/gi, '');
-      const order = pattern.match(/\d+/gi);
-      if (!order) return;
+    const patterns = question.split("=").map((_) => _.trim());
+    patterns.pop();
+    if (!patterns.length || patterns.length !== 5) return;
 
-      scores[+order[0]] = 'blank';
-
-      const notChosenAns = pattern.match(/[A-Za-z]+/gi);
-      const chosenAns = 'ABCD'.match(new RegExp(`[^${notChosenAns}]`, 'gim'));
-
-      chosenAns && (scores[+order[0]] = chosenAns[0].toLowerCase());
-    });
+    const order = patterns[0];
+    const notChosenAns = patterns.indexOf("@") - 1;
+    scores[+order] = notChosenAns !== -1 ? "abcd"[notChosenAns] : "blank";
   });
 
   return {
@@ -77,14 +83,21 @@ export const standardize = (lines: RecogResultType) => {
 };
 
 export const standardizeAnswer = (answer: string) => {
-  const rawAnswer = answer.split('\n').map((item) => item.trim().replace(/\s/g, ''));
+  const rawAnswer = answer
+    .replace(/[\t]/g, "")
+    .replace(/[\s\s+]/g, " ")
+    .replace(/[\n\n+]/g, "\n")
+    .split(" ")
+    .map((item) => item.replace(/\s/g, ""));
   const answerData: { [key: string]: string } = {};
 
+  console.log("🚀 ~ standardizeAnswer ~ rawAnswer:", rawAnswer);
+
   rawAnswer.forEach((item) => {
-    const x = item.split('.');
+    const x = item.split(/[\.\\\/\:]/);
     if (x.length < 2) return;
 
-    answerData[x[0]] = x[1].toLowerCase();
+    answerData[+x[0].trim()] = x[1].trim().toLowerCase();
   });
 
   return {
@@ -95,13 +108,13 @@ export const standardizeAnswer = (answer: string) => {
 
 export const getFilterGroup = (
   filter: { [key: string]: boolean },
-  scoreGroups: ScoreGroupsType
+  scoreGroups: ScoreGroupsType,
 ) => {
   const filterResult: {
     selectLabel: string;
     labels: string[];
   } = {
-    selectLabel: '',
+    selectLabel: "",
     labels: [],
   };
 
@@ -113,7 +126,7 @@ export const getFilterGroup = (
     ...new Set(
       [...scoreGroups].map((group) => {
         return group[filterResult.selectLabel] as string;
-      })
+      }),
     ),
   ];
 

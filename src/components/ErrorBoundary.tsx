@@ -1,5 +1,6 @@
-import { ErrorContent } from '@cpns/shared';
-import { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from "react";
+
+import { ErrorContent } from "@cpns/shared";
 
 interface Props {
   children?: ReactNode;
@@ -22,15 +23,15 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {
     if (this.state.hasError)
       return (
-        <div className="fullscreen bg-ct-bg-800">
-          <ErrorContent errorBoundaries />;
-        </div>
+        <main className="fullscreen m-auto">
+          <ErrorContent errorBoundaries />
+        </main>
       );
 
     return this.props.children;

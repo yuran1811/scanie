@@ -1,9 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { ImgSourcesProps, ImgSourcesState } from '@shared/types';
-import { v4 as uuidv4 } from 'uuid';
+import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
+
+import { ImgSourcesProps, ImgSourcesState } from "@shared/types";
 
 const { actions, reducer } = createSlice({
-  name: 'imgSourcesState',
+  name: "imgSourcesState",
 
   initialState: {
     imgSources: [],
@@ -16,7 +17,7 @@ const { actions, reducer } = createSlice({
 
     addImgSource: (
       state,
-      { payload }: { payload: Omit<ImgSourcesProps, 'id' | 'recogResult'> }
+      { payload }: { payload: Omit<ImgSourcesProps, "id" | "recogResult"> }
     ) => {
       state.imgSources.unshift({ ...payload, id: uuidv4(), recogResult: [] });
     },

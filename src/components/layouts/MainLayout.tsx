@@ -1,15 +1,14 @@
-import { JudgeBubble } from '@cpns/features/Judge/JudgeBubble';
-import { FC, PropsWithChildren } from 'react';
-import { ToastContainer } from 'react-toastify';
-import { Footer, Header } from './partials';
+import { FC, PropsWithChildren } from "react";
+import { ToastContainer } from "react-toastify";
+
+import { Footer, Header } from "./partials";
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => (
   <>
-    <div className="fullsize relative overflow-x-hidden bg-ct-bg-800 text-[3rem] text-ct-color">
+    <div className="fullsize relative overflow-x-hidden">
       <Header />
-      <div>{children}</div>
+      <main className="min-h-[calc(100dvh-220px)]">{children}</main>
       <Footer />
-      <JudgeBubble />
     </div>
 
     <div id="modal-container"></div>

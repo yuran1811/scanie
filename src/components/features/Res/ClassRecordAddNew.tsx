@@ -1,10 +1,11 @@
-import { addScoreGroup } from '@/redux/scoreGroupsSlice';
-import { DivProps } from '@/shared';
-import { ErrorMessage } from '@cpns/interfaces';
-import { Button, Input, ModalBox } from '@cpns/shared';
-import { Dispatch, FC, SetStateAction } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { Dispatch, FC, SetStateAction } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+
+import { addScoreGroup } from "@/redux/scoreGroupsSlice";
+import { DivProps } from "@/shared";
+import { ErrorMessage } from "@cpns/interfaces";
+import { Button, Input, ModalBox } from "@cpns/shared";
 
 interface Inputs {
   class: string;
@@ -31,67 +32,62 @@ export const ClassRecordAddNew: FC<ClassRecordAddNewProps & DivProps> = ({ onCli
         ...data,
         amount: 0,
         scores: [],
-      })
+      }),
     );
     onClickHandle(false);
   };
 
   return (
-    <ModalBox onClick={() => onClickHandle(false)}>
-      <div className="w-full p-4 text-[4rem] text-ct-color line-clamp-1">New class record</div>
+    <ModalBox className="rounded-xl p-4" onClick={() => onClickHandle(false)}>
+      <div className="text-ct-color line-clamp-1 w-full text-3xl">New class record</div>
+
       <form
-        className="flexcentercol w-full p-8 text-center text-[5rem] font-bold line-clamp-1"
+        className="flexcentercol **:text-ct-color mt-4 w-full gap-3 text-center font-bold"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
           placeholder="Class"
           defaultValue=""
           formHandle={{
-            ...register('class', {
+            ...register("class", {
               validate: {
-                notEmpty: (v) => !!v.trim().length || 'Cannot empty',
-                isValid: (v) => /[\w\d\s]*/.test(v.trim()) || 'Invalid class',
+                notEmpty: (v) => !!v.trim().length || "Cannot empty",
+                isValid: (v) => /[\w\d\s]*/.test(v.trim()) || "Invalid class",
               },
             }),
           }}
         />
-        {errors?.class && (
-          <ErrorMessage className="text-[3rem]" content={errors.class.message || ''} />
-        )}
+        {errors?.class && <ErrorMessage className="" content={errors.class.message || ""} />}
 
         <Input
           placeholder="Subject"
           defaultValue=""
           formHandle={{
-            ...register('subject', {
+            ...register("subject", {
               validate: {
-                notEmpty: (v) => !!v.trim().length || 'Cannot empty',
-                isValid: (v) => /[\w\d\s]*/.test(v.trim()) || 'Invalid subject',
+                notEmpty: (v) => !!v.trim().length || "Cannot empty",
+                isValid: (v) => /[\w\d\s]*/.test(v.trim()) || "Invalid subject",
               },
             }),
           }}
         />
-        {errors?.subject && (
-          <ErrorMessage className="text-[3rem]" content={errors.subject.message || ''} />
-        )}
+        {errors?.subject && <ErrorMessage className="" content={errors.subject.message || ""} />}
 
         <Input
           placeholder="Type"
           defaultValue=""
           formHandle={{
-            ...register('type', {
+            ...register("type", {
               validate: {
-                notEmpty: (v) => !!v.trim().length || 'Cannot empty',
-                isValid: (v) => /[\w\d\s]*/.test(v.trim()) || 'Invalid type',
+                notEmpty: (v) => !!v.trim().length || "Cannot empty",
+                isValid: (v) => /[\w\d\s]*/.test(v.trim()) || "Invalid type",
               },
             }),
           }}
         />
-        {errors?.type && (
-          <ErrorMessage className="text-[3rem]" content={errors.type.message || ''} />
-        )}
+        {errors?.type && <ErrorMessage className="" content={errors.type.message || ""} />}
 
-        <Button className="text-[3rem]" type="submit">
+        <Button className="" type="submit">
           Add
         </Button>
       </form>

@@ -1,7 +1,7 @@
 export const Home = () => (
-  <div className="w-full p-8">
-    <div className="mx-auto my-6 w-full p-8 text-center text-[3.5rem] font-bold text-ct-color sm:w-[70%] sm:text-[5.5rem]">
+  <div className="container mx-auto">
+    <p className="py-12 text-center text-2xl font-bold sm:text-3xl md:text-5xl">
       An alternative of test judging
-    </div>
+    </p>
   </div>
 );

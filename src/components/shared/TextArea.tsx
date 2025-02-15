@@ -1,5 +1,6 @@
-import { DivProps } from '@/shared';
-import { FC, RefObject } from 'react';
+import { FC } from "react";
+
+import { DivProps } from "@/shared";
 
 interface TextAreaProps {
   formHandle?: any;
@@ -17,9 +18,9 @@ export const TextArea: FC<TextAreaProps & DivProps> = ({
     {...otherProps}
     {...formHandle}
     ref={ref}
-    className={`${
-      className || ''
-    } isAnimated my-[0.5rem] w-full max-w-[32rem] rounded-[2.5rem] border-[0.5rem] border-solid border-transparent bg-ct-bg-800 px-[2rem] py-[1rem] text-[3rem] text-ct-color outline-none focus:border-current`}
-    placeholder={placeholder || 'Content'}
+    className={`isAnimated bg-ct-bg-800 w-full max-w-[32rem] rounded-xl border-2 border-solid border-transparent px-5 py-2 outline-hidden focus:border-current ${
+      className || ""
+    }`}
+    placeholder={placeholder || "Content"}
   />
 );

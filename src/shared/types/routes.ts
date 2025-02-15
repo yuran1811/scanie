@@ -1,4 +1,5 @@
 export type RoutesType = {
+  label: string;
   path: {
     index: string;
     others?: {

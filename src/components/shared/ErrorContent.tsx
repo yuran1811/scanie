@@ -1,7 +1,7 @@
-import { BackIcon } from '@cpns/icons';
-import { ErrorText } from '@cpns/interfaces';
-import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { BackIcon } from "@cpns/icons";
 
 interface ErrorContentProps {
   errorBoundaries?: boolean;
@@ -11,21 +11,30 @@ export const ErrorContent: FC<ErrorContentProps> = ({ errorBoundaries = false })
   const navigate = useNavigate();
 
   return (
-    <div className="p-20">
-      <ErrorText className="text-[7rem] mobile:line-clamp-1 tablet:text-[15rem]">Oops!</ErrorText>
-      <ErrorText className="text-[4rem] line-clamp-3 tablet:text-7xl">
-        Something went wrong!
-      </ErrorText>
+    <section className="flex h-full items-center p-16 **:select-none">
+      <div className="container mx-auto my-8 flex flex-col items-center justify-center px-5">
+        <div className="max-w-md text-center">
+          <h2 className="mb-8 text-9xl font-extrabold text-gray-600">
+            <span className="sr-only">Error</span>404
+          </h2>
+          <p className="text-2xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
+          <p className="mt-4 mb-8 text-gray-400">
+            But dont worry, you can find plenty of other things on our homepage.
+          </p>
 
-      <BackIcon
-        className="!text-indigo-300"
-        onClick={() => {
-          if (errorBoundaries) {
-            navigate('/');
-            window.location.reload();
-          } else navigate(-1);
-        }}
-      />
-    </div>
+          <BackIcon
+            className="mx-auto"
+            onClick={() => {
+              if (errorBoundaries) {
+                navigate("/");
+                window.location.reload();
+              } else navigate(-1);
+            }}
+          >
+            Back to homepage
+          </BackIcon>
+        </div>
+      </div>
+    </section>
   );
 };

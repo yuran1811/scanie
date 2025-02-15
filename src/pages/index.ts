@@ -1,3 +1,3 @@
-export * from './HomePage';
-export * from './JudgePage';
-export * from './ResultPage';
+export * from "./HomePage";
+export * from "./JudgePage";
+export * from "./ResultPage";

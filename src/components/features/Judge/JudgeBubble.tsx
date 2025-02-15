@@ -1,34 +1,54 @@
-import Tippy from '@tippyjs/react/headless';
-import { useState } from 'react';
-import { JudgeContainer } from './JudgeContainer';
+import {
+  autoUpdate,
+  FloatingFocusManager,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+} from "@floating-ui/react";
+import { useState } from "react";
+
+import { JudgeContainer } from "./JudgeContainer";
+import { UploadIcon } from "@cpns/icons";
 
 export const JudgeBubble = () => {
-  const [openModel, setOpenModel] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    whileElementsMounted: autoUpdate,
+  });
+
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
   return (
-    <div className="custom-tippy fixed top-4 right-16 z-[100]">
-      <Tippy
-        interactive
-        visible={openModel}
-        placement="bottom-end"
-        onClickOutside={() => setOpenModel(false)}
-        render={(attrs) => (
+    <>
+      <div
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        className={`isAnimated flexcenter relative size-10 cursor-pointer rounded-full before:absolute before:inset-0 before:z-[-1] before:rounded-full before:bg-sky-400 before:content-[""] ${
+          isOpen ? "before:inset-2 before:animate-ping" : ""
+        }`}
+      >
+        <UploadIcon className="size-6 text-sky-700" />
+      </div>
+
+      {isOpen && (
+        <FloatingFocusManager context={context} modal={false}>
           <div
-            {...attrs}
-            className="z-1 absolute top-24 right-0 max-h-[80vh] max-w-[80vw] overflow-auto rounded-3xl bg-slate-900"
+            ref={refs.setFloating}
+            className="max-h-[80vh] w-max overflow-auto"
+            style={{ ...floatingStyles, left: "-16rem", top: "0.5rem" }}
+            {...getFloatingProps()}
           >
             <JudgeContainer />
           </div>
-        )}
-      >
-        <div onClick={() => setOpenModel((s) => !s)}>
-          <div
-            className={`isAnimated h-20 w-20 cursor-pointer rounded-full ${
-              !openModel ? 'bg-violet-500' : 'bg-emerald-400'
-            }`}
-          ></div>
-        </div>
-      </Tippy>
-    </div>
+        </FloatingFocusManager>
+      )}
+    </>
   );
 };

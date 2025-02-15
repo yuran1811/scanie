@@ -1,8 +1,9 @@
-import { addImgSource } from '@/redux/imgSourcesSlice';
-import { Button } from '@cpns/shared';
-import { InputProps } from '@shared/types';
-import { FC, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { addImgSource } from "@/redux/imgSourcesSlice";
+import { Button } from "@cpns/shared";
+import { InputProps } from "@shared/types";
 
 interface ImageUploadProps {}
 
@@ -17,7 +18,7 @@ const ImageUpload: FC<ImageUploadProps & InputProps> = () => {
   const uploadHandle = () => {
     urls.forEach((url) => dispatch(addImgSource({ url })));
 
-    inputRef.current && (inputRef.current.value = '');
+    inputRef.current && (inputRef.current.value = "");
     setCanUpload(false);
   };
 
@@ -43,14 +44,14 @@ const ImageUpload: FC<ImageUploadProps & InputProps> = () => {
   };
 
   return (
-    <div className="mb-4 flex w-full max-w-[35rem] flex-col items-center justify-start">
-      <div className="mb-8 flex w-full items-center justify-start rounded-[2rem] border-4 border-ct-color">
+    <div className="flex w-full max-w-[35rem] flex-col items-center justify-start gap-4">
+      <div className="border-ct-color flex w-full items-center justify-start overflow-hidden rounded-lg border-2">
         <label className="hidden cursor-pointer px-4 font-semibold sm:block" htmlFor="upload-image">
           Choose images
         </label>
         <input
           ref={inputRef}
-          className="flex-1 cursor-pointer rounded-[1.4rem] bg-ct-color py-6 px-4 text-ct-bg-800"
+          className="bg-ct-color text-ct-bg-800 flex-1 cursor-pointer px-4 py-2 outline-none"
           id="upload-image"
           type="file"
           multiple
@@ -58,11 +59,7 @@ const ImageUpload: FC<ImageUploadProps & InputProps> = () => {
         />
       </div>
 
-      {canUpload && (
-        <Button className="m-6 rounded-[1rem] p-6 text-[3rem] font-semibold" onClick={uploadHandle}>
-          Upload
-        </Button>
-      )}
+      {canUpload && <Button onClick={uploadHandle}>Upload</Button>}
     </div>
   );
 };

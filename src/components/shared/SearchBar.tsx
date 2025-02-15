@@ -1,35 +1,24 @@
-import { InputProps } from '@shared/types';
-import { FC, useRef, useState } from 'react';
+import { FC, useRef, useState } from "react";
 
-interface SearchBarProps {
-  // setSearchOpts: Dispatch<
-  //   SetStateAction<{
-  //     isSearch: boolean;
-  //     value: string;
-  //   }>
-  // >;
-}
+import { InputProps } from "@shared/types";
 
-export const SearchBar: FC<SearchBarProps & InputProps> = ({ onChange }) => {
+export const SearchBar: FC<InputProps> = ({ onChange }) => {
   const [isActive, setActive] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="flexcenter relative mb-8 h-24 w-4/5">
+    <div className="flexcenter relative mx-auto h-12 w-4/5">
       <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]">
         <input
           ref={inputRef}
-          className={`border-[0.4rem] border-solid border-white text-[3rem] outline-none
-					${
-            isActive
-              ? 'h-24 w-[28rem] rounded-none py-[0.8rem] pl-[2rem] pr-[5.5rem] tablet:w-[36rem]'
-              : 'h-20 w-20 rounded-[5rem]'
+          className={`border-3 border-solid border-white outline-hidden ${
+            isActive ? "h-12 w-72 rounded-none px-5 pr-10 pl-3 md:w-100" : "size-8 rounded-4xl"
           }`}
           style={{
-            background: 'none',
+            background: "none",
             transition:
-              'width 0.4s 0.1s ease-in-out, border-radius 0.4s 0.2s ease-in-out, padding 0.2s 0.4s',
+              "width 0.4s 0.1s ease-in-out, border-radius 0.4s 0.2s ease-in-out, padding 0.2s 0.4s",
           }}
           type="text"
           disabled={!isActive}
@@ -39,19 +28,16 @@ export const SearchBar: FC<SearchBarProps & InputProps> = ({ onChange }) => {
             !val.length && setActive(false);
           }}
         />
+
         <button
-          className={`isAnimated before:isAnimated after:isAnimated absolute top-0 bottom-0 right-0 h-20 w-20 cursor-pointer border-none bg-none before:absolute before:bottom-[-1.6rem] before:right-[-0.6rem] before:h-[2.5rem] before:w-[0.4rem] before:rotate-[-45deg] before:bg-white before:content-[""] ${
+          className={`isAnimated before:isAnimated after:isAnimated absolute top-0 right-0 bottom-0 size-12 cursor-pointer border-none bg-none before:absolute before:right-[-5px] before:bottom-[1px] before:h-6 before:w-0.5 before:rotate-[-45deg] before:bg-white before:content-[""] ${
             isActive &&
-            `!h-24 !w-24 before:absolute before:bottom-[1.2rem] before:right-[2.8rem] before:h-[3.4rem] before:w-[0.4rem] before:bg-white before:content-[""] after:absolute after:bottom-[1.2rem] after:right-[2.8rem] after:h-[3.4rem] after:w-[0.4rem] after:rotate-45 after:bg-white after:content-[""]`
+            `before:absolute before:right-[28px] before:!bottom-[14px] before:h-6 before:w-0.5 before:bg-white before:content-[""] after:absolute after:right-[28px] after:bottom-[14px] after:h-6 after:w-0.5 after:rotate-45 after:bg-white after:content-[""]`
           }`}
-          style={{ background: 'none' }}
+          style={{ background: "none" }}
           onClick={() => {
             if (isActive && inputRef !== null && inputRef?.current) {
-              inputRef.current.value = '';
-              // setSearchOpts({
-              //   isSearch: false,
-              //   value: '',
-              // });
+              inputRef.current.value = "";
             }
             setActive((s) => !s);
           }}

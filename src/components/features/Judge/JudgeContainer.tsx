@@ -1,9 +1,7 @@
-import ImageUpload from './ImageUpload';
+import ImageUpload from "./ImageUpload";
 
-export const JudgeContainer = () => {
-  return (
-    <div className="flexcentercol p-8">
-      <ImageUpload />
-    </div>
-  );
-};
+export const JudgeContainer = () => (
+  <div className="bg-ct-bg-800 flexcentercol rounded-xl border-2 p-4">
+    <ImageUpload />
+  </div>
+);
