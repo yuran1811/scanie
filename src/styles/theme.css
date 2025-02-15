@@ -1,0 +1,7 @@
+@theme {
+  --font-source-sans-pro: "Source Sans Pro", sans-serif;
+
+  --breakpoint-tiny: 20rem;
+  --breakpoint-ss: 24rem;
+  --breakpoint-xs: 32rem;
+}

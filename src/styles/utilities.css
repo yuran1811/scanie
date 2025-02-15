@@ -1,0 +1,103 @@
+@utility h-num {
+  @apply text-[72px] leading-[84px] font-bold;
+}
+
+@utility h1 {
+  @apply text-[84px] leading-[84px] font-black tracking-[-0.03em];
+}
+
+@utility h2 {
+  @apply text-[64px] leading-[64px] font-black;
+}
+
+@utility h3 {
+  @apply text-[48px] leading-[56px] font-semibold tracking-[-0.02em];
+}
+
+@utility h4 {
+  @apply text-[40px] leading-[52px] font-semibold;
+}
+
+@utility h5 {
+  @apply text-[32px] leading-[40px] font-semibold;
+}
+
+@utility h6 {
+  @apply text-[24px] leading-[36px] font-medium;
+}
+
+@utility body-1 {
+  @apply text-[22px] leading-[36px];
+}
+
+@utility body-2 {
+  @apply text-[18px] leading-[32px] font-semibold;
+}
+
+@utility body-3 {
+  @apply text-[16px] leading-[28px] tracking-[0.02em];
+}
+
+@utility base {
+  @apply text-[16px] leading-[24px] font-medium tracking-[0.03em];
+}
+
+@utility base-bold {
+  @apply text-[16px] leading-[24px] font-bold;
+}
+
+@utility base-small {
+  @apply text-[14px] leading-[18px] font-semibold tracking-[0.03em];
+}
+
+@utility small-1 {
+  @apply text-[14px] leading-[18px] font-semibold tracking-[0.03em];
+}
+
+@utility small-2 {
+  @apply text-[12px] leading-[16px] font-bold tracking-[0.3em];
+}
+
+@utility small-compact {
+  @apply text-[12px] leading-[18px] font-semibold tracking-[0.03em];
+}
+
+@utility flexcenter {
+  @apply flex items-center justify-center;
+}
+
+@utility flexcentercol {
+  @apply flexcenter flex-col;
+}
+
+@utility isAnimated {
+  @apply transition-all duration-300;
+}
+
+@utility fullsize {
+  @apply h-screen w-screen;
+}
+
+@utility fullscreen {
+  @apply fullsize fixed top-0 left-0;
+}
+
+@utility scrollY {
+  @apply overflow-x-hidden overflow-y-auto;
+}
+
+@utility scrollX {
+  @apply overflow-x-auto overflow-y-hidden;
+}
+
+@utility animateBorderGradient {
+  @apply border-4 border-solid;
+  border-image: linear-gradient(45deg, gold, deeppink) 1;
+  clip-path: inset(0px round 10px);
+  animation: huerotate 6s infinite linear;
+  filter: hue-rotate(360deg);
+}
+
+@utility withUnderline {
+  @apply underline underline-offset-8;
+}

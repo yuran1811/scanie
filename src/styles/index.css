@@ -1,1 +1,62 @@
-@import 'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700&display=swap';@tailwind base;@tailwind components;@tailwind utilities;@layer base{*,*::before,*::after{font-family:'Source Sans Pro',sans-serif !important;@apply text-[2rem] tracking-[-0.5px]}*::selection{@apply text-ct-bg-800 bg-ct-color}*::-webkit-scrollbar,*::-webkit-scrollbar-thumb{@apply w-0 h-0}html{@apply !text-[62.5%]}body{@apply overflow-x-hidden overflow-y-auto scroll-smooth bg-white}canvas{@apply cursor-crosshair border-[2px] border-black}input{@apply select-auto}input[type='file']::-webkit-file-upload-button{@apply hidden}}@layer utilities{.flexcenter{@apply flex items-center justify-center}.flexcentercol{@apply flexcenter flex-col}.isAnimated{@apply transition-all duration-300}.fullsize{@apply w-[100vw] h-[100vh]}.fullscreen{@apply fixed top-0 left-0 fullsize}.scrollY{@apply overflow-y-auto overflow-x-hidden}.scrollX{@apply overflow-x-auto overflow-y-hidden}.animateBorderGradient{@apply border-[1rem] border-solid;border-image:linear-gradient(45deg,gold,deeppink) 1;clip-path:inset(0px round 10px);animation:huerotate 6s infinite linear;filter:hue-rotate(360deg)}}@keyframes huerotate{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}.Toastify__toast-icon,.Toastify__close-button svg{@apply !w-[3.6rem] !h-[3.6rem]}.Toastify__toast-container{@apply !w-[100vw] tablet:!w-max tablet:max-w-[50rem]}.custom-tippy div[data-tippy-root]{position:unset !important;transform:unset !important}div[data-tippy-root] *{@apply !tracking-wide}
+@import "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;500;600;700&display=swap"
+  layer(base);
+
+@import "tailwindcss";
+@import "./theme.css";
+@import "./utilities.css";
+
+@config '../../tailwind.config.js';
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply font-source-sans-pro text-xl tracking-tight;
+  }
+  *::selection {
+    @apply text-ct-bg-800 bg-ct-color;
+  }
+  *::-webkit-scrollbar,
+  *::-webkit-scrollbar-thumb {
+    @apply size-0;
+  }
+
+  body {
+    @apply scrollY bg-ct-bg-800 text-ct-color scroll-smooth;
+  }
+
+  canvas {
+    @apply border-ct-bg-400 cursor-crosshair border-2;
+  }
+
+  button {
+    @apply !cursor-pointer;
+  }
+
+  input {
+    @apply select-auto;
+
+    &[type="file"]::-webkit-file-upload-button {
+      @apply hidden;
+    }
+  }
+}
+
+@keyframes huerotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.Toastify__toast-container {
+  .Toastify__toast {
+  }
+
+  .Toastify__toast-icon,
+  .Toastify__close-button svg {
+    @apply !size-6;
+  }
+}
